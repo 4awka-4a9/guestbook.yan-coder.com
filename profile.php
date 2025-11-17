@@ -56,7 +56,6 @@ if (!empty($_POST)) {
       $check = getimagesize($_FILES["fileToUpload"]["tmp_name"]);
 
       if ($check !== false) {
-          $errors[] = "File is an image - " . $check["mime"] . ".";
           $uploadOk = 1;
       }
 
@@ -97,9 +96,9 @@ if (!empty($_POST)) {
     }
 }
 
-$stmt = $pdo->prepare("SELECT username, first_name, last_name, about_me, avatar FROM `users`");
-$stmt->execute();
-$user = $stmt->fetchAll();
+$stmt = $pdo->prepare("SELECT username, first_name, last_name, about_me, avatar FROM `users` WHERE id = :user_id");
+$stmt->execute(array("user_id" => $_SESSION["user_id"]));
+$user = $stmt->fetch(PDO::FETCH_ASSOC);
 
 ?>
 
@@ -255,15 +254,13 @@ $user = $stmt->fetchAll();
         
         <form method="POST" enctype="multipart/form-data">
 
-            <?php foreach ($user as $current_user) : ?>
             <?php
 
-              $current_user["username"] = htmlspecialchars($current_user["username"]);
-              $current_user["first_name"] = htmlspecialchars($current_user["first_name"]);
-              $current_user["last_name"] = htmlspecialchars($current_user["last_name"]);
+              $user["username"] = htmlspecialchars($user["username"]);
+              $user["first_name"] = htmlspecialchars($user["first_name"]);
+              $user["last_name"] = htmlspecialchars($user["last_name"]);
 
             ?>
-            <?php endforeach; ?>
 
             <label class="m-t-b">Edit profile</label>
 
@@ -305,9 +302,9 @@ $user = $stmt->fetchAll();
                     id="floatingInput"
                     placeholder="name@example.com"
                     name="user_name"
-                    value="<?php echo (!empty($_POST["user_name"]) ? $_POST["user_name"] : ''); ?>"
+                    value="<?php echo $user["username"];?>"
                 />
-                <label for="floatingInput"><?php echo $current_user["username"];?></label>
+                <label for="floatingInput">Username</label>
             </div>
 
             <div class="form-floating m-t-b">
@@ -318,9 +315,9 @@ $user = $stmt->fetchAll();
                     placeholder="last name"
                     name="first_name" 
                     required="" 
-                    value="<?php echo (!empty($_POST["first_name"]) ? $_POST["first_name"] : ''); ?>"
+                    value="<?php echo $user["first_name"];?>"
                 />
-                <label for="floatingPassword"><?php echo $current_user["first_name"];?></label>
+                <label for="floatingPassword">First name</label>
             </div>
 
             <div class="form-floating m-t-b">
@@ -331,9 +328,9 @@ $user = $stmt->fetchAll();
                     placeholder="Last name"
                     name="last_name" 
                     required="" 
-                    value="<?php echo (!empty($_POST["last_name"]) ? $_POST["last_name"] : ''); ?>"
+                    value="<?php echo $user["last_name"];?>"
                 />
-                <label for="floatingPassword"><?php echo $current_user["last_name"];?></label>
+                <label for="floatingPassword">Last name</label>
             </div>
 
             <div class="form-floating m-t-b">
@@ -368,9 +365,8 @@ $user = $stmt->fetchAll();
                     id="floatingPassword"
                     placeholder="About me"
                     name="about_me"  
-                    value=""
-                >
-                </textarea>
+                ><?php echo $user["about_me"];?></textarea>
+                
                 <label for="floatingPassword">About me</label>
             </div>
 
