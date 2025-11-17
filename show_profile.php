@@ -5,20 +5,9 @@ if (empty($_SESSION["user_id"])) {
     header("location: login.php");
 }
 
-if (!empty($_POST["comment"])) {
-        $stmt = $pdo->prepare("INSERT INTO comments(`user_id`, `comment`) VALUES(:user_id, :comment)");
-        $stmt->execute(array("user_id" => $_SESSION["user_id"], "comment" => $_POST["comment"]));
-    }   
-
-if (isset($_GET["action"]) && $_GET["action"] == "delete_comment") {
-    $stmt = $pdo->prepare("DELETE FROM `comments` WHERE id = :id AND user_id = :user_id");
-    $stmt->execute(array("user_id" => $_SESSION["user_id"], "id" => $_GET["comment_id"]));
-    header("location: index.php");
-}
-
-$stmt = $pdo->prepare("SELECT users.username, comments.comment, comments.created_at, users.avatar, comments.id, comments.user_id FROM `comments` LEFT JOIN users ON user_id=users.id ORDER BY comments.id DESC;");
-$stmt->execute();
-$comments = $stmt->fetchAll();
+$stmt = $pdo->prepare("SELECT username, first_name, last_name, about_me, avatar, email FROM `users` WHERE id = :id");
+$stmt->execute(array("id" => $_GET["id"]));
+$user = $stmt->fetchAll();
 
 ?>
 
@@ -166,9 +155,15 @@ $comments = $stmt->fetchAll();
           <nav class="d-inline-flex mt-2 mt-md-0 ms-md-auto">
             <a
               class="btn btn-outline-secondary me-3 py-2 link-body-emphasis text-decoration-none"
+              href="index.php"
+              >Home</a
+            >
+            <a
+              class="btn btn-outline-secondary me-3 py-2 link-body-emphasis text-decoration-none"
               href="profile.php"
               >Edit profile</a
             >
+            
             <a
               class="btn  btn-outline-secondary me-3 py-2 link-body-emphasis text-decoration-none"
               href="logout.php"
@@ -178,86 +173,58 @@ $comments = $stmt->fetchAll();
           </nav>
         </div>
       </header>
+
       <main>
-        
-        <div id="#comments-form"><h3>Please add your comment</h3>
 
-        <form method="POST" action="index.php">
+        <table class="table table-striped table-hover">
 
-            <div>
-
-                <label>Comment</label>
-                <div>
-                    <textarea class="form-control textarea" name="comment"></textarea>
-                </div>
-
-            </div>
-
-            <div>
-
-                <br>
-                <input class="btn btn-outline-secondary"type="submit" name="submit" value="Save">
-
-            </div>
-
-        </form>
-
-        </div>  
-
-        <div id="#comments-panel">
-
-          <h3 class="commentsTitle">Comments:</h3>
-
-            <?php foreach ( $comments as $comment ) : ?>
-
+            <?php foreach ($user as $current_user) : ?>
             <?php
 
-            $comment["comment"] = htmlspecialchars($comment["comment"]);
-            $comment["username"] = htmlspecialchars($comment["username"]);
+              $current_user["username"] = htmlspecialchars($current_user["username"]);
+              $current_user["email"] = htmlspecialchars($current_user["email"]);
+              $current_user["first_name"] = htmlspecialchars($current_user["first_name"]);
+              $current_user["last_name"] = htmlspecialchars($current_user["last_name"]);
 
-            $comment["comment"] = preg_replace('~https?://[^\s]+|www\.[^\s]+~i', '<a href="$0">$0</a>', $comment["comment"]);
+              if ($current_user["about_me"]) {
+                $about_me = $current_user["about_me"];
+              }
+              else {
+                $about_me = "None";
+              }
 
-            if ($comment["avatar"]) {
-              $avatar = $comment["avatar"];
-            }
-            else {
-              $avatar = "default_avatar.jpg";
-            }
-
-            $delete_comment = "";
-
-            if ($_SESSION["user_id"] == $comment["user_id"]) {
-                $delete_comment = '<a href="index.php?action=delete_comment&comment_id=' . htmlspecialchars($comment["id"]) . '" class="ms-auto">Delete</a>';
-            }
-            
-            $commentTemplate = <<<TXT
-            <div class="card">
-              <div class="card-header d-flex align-items-center">
-                <img class="avatar me-2" src="avatars/{$avatar}">
-                <a href="show_profile.php?id={$comment["user_id"]}">{$comment["username"]}</a>
-                {$delete_comment}
-              </div>
-              <div class="card-body">
-                <figure>
-                  <blockquote class="blockquote">
-                    <p><pre>{$comment["comment"]}</pre></p>
-                  </blockquote>
-                  <figcaption class="blockquote-footer">
-                      {$comment["created_at"]}
-                  </figcaption>
-                </figure>
-              </div>
-            </div>
-            TXT;
-            
             ?>
-
-            <?php echo $commentTemplate;?>
             <?php endforeach; ?>
 
-        </div>
+            <tbody>
+
+                <tr>
+                    <th>Username</th>
+                    <td><?php echo $current_user["username"];?></td>
+                </tr>
+                <tr>
+                    <th>Email</th>
+                    <td><a href="mailto:" <?php echo $current_user["email"];?>><?php echo $current_user["email"];?></a></td>
+                </tr>
+                <tr>
+                    <th>First name</th>
+                    <td><?php echo $current_user["first_name"];?></td>
+                </tr>
+                <tr>
+                    <th>Last name</th>
+                    <td><?php echo $current_user["last_name"];?></td>
+                </tr>
+                <tr>
+                    <th>About me</th>
+                    <td><?php echo $about_me;?></td>
+                </tr>
+
+            </tbody>
+
+        </table>
 
       </main>
+
       <footer class="pt-4 my-md-5 pt-md-5 border-top">
         <div class="row">
           <div class="col-12 col-md">

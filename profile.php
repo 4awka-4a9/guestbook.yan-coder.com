@@ -56,16 +56,16 @@ if (!empty($_POST)) {
       $check = getimagesize($_FILES["fileToUpload"]["tmp_name"]);
 
       if ($check !== false) {
-          echo "File is an image - " . $check["mime"] . ".";
+          $errors[] = "File is an image - " . $check["mime"] . ".";
           $uploadOk = 1;
       }
 
       else {
-          echo "File is not an image.";
+          $errors[] = "File is not an image.";
           $uploadOk = 0;
       }
 
-      if ($_FILES["fileToUpload"]["size"] > 500000) {
+      if ($_FILES["fileToUpload"]["size"] > 5000000) {
           $errors[] = "Sorry, your file is too large.";
           $uploadOk = 0;
       }
@@ -96,6 +96,10 @@ if (!empty($_POST)) {
         $id = $stmt->fetchColumn();
     }
 }
+
+$stmt = $pdo->prepare("SELECT username, first_name, last_name, about_me, avatar FROM `users`");
+$stmt->execute();
+$user = $stmt->fetchAll();
 
 ?>
 
@@ -251,6 +255,16 @@ if (!empty($_POST)) {
         
         <form method="POST" enctype="multipart/form-data">
 
+            <?php foreach ($user as $current_user) : ?>
+            <?php
+
+              $current_user["username"] = htmlspecialchars($current_user["username"]);
+              $current_user["first_name"] = htmlspecialchars($current_user["first_name"]);
+              $current_user["last_name"] = htmlspecialchars($current_user["last_name"]);
+
+            ?>
+            <?php endforeach; ?>
+
             <label class="m-t-b">Edit profile</label>
 
             <div style="color: red;">
@@ -282,7 +296,7 @@ if (!empty($_POST)) {
               </label>
 
               <input type="text" class="form-control" id="fileNameDisplay" placeholder="No file selected" readonly>
-          </div>
+            </div>
 
             <div class="form-floating m-t-b">
                 <input
@@ -293,7 +307,7 @@ if (!empty($_POST)) {
                     name="user_name"
                     value="<?php echo (!empty($_POST["user_name"]) ? $_POST["user_name"] : ''); ?>"
                 />
-                <label for="floatingInput">Username</label>
+                <label for="floatingInput"><?php echo $current_user["username"];?></label>
             </div>
 
             <div class="form-floating m-t-b">
@@ -306,7 +320,7 @@ if (!empty($_POST)) {
                     required="" 
                     value="<?php echo (!empty($_POST["first_name"]) ? $_POST["first_name"] : ''); ?>"
                 />
-                <label for="floatingPassword">First name</label>
+                <label for="floatingPassword"><?php echo $current_user["first_name"];?></label>
             </div>
 
             <div class="form-floating m-t-b">
@@ -319,7 +333,7 @@ if (!empty($_POST)) {
                     required="" 
                     value="<?php echo (!empty($_POST["last_name"]) ? $_POST["last_name"] : ''); ?>"
                 />
-                <label for="floatingPassword">Last name</label>
+                <label for="floatingPassword"><?php echo $current_user["last_name"];?></label>
             </div>
 
             <div class="form-floating m-t-b">
@@ -348,14 +362,15 @@ if (!empty($_POST)) {
             </div>
 
             <div class="form-floating m-t-b">
-                <input
+                <textarea
                     type="text"
                     class="form-control input"
                     id="floatingPassword"
                     placeholder="About me"
                     name="about_me"  
                     value=""
-                />
+                >
+                </textarea>
                 <label for="floatingPassword">About me</label>
             </div>
 
@@ -378,6 +393,12 @@ if (!empty($_POST)) {
           </div>
           <div class="col-6 col-md">
             <h5><a class="btn  btn-outline-secondary me-3 py-2 link-body-emphasis text-decoration-none" href="index.php">Home</a></h5>
+          </div>
+          <div class="col-6 col-md">
+            <h5><a class="btn  btn-outline-secondary me-3 py-2 link-body-emphasis text-decoration-none" href="profile.php">Edit profile</a></h5>
+          </div>
+          <div class="col-6 col-md">
+            <h5><a class="btn  btn-outline-secondary me-3 py-2 link-body-emphasis text-decoration-none" href="logout.php">Log out</a></h5>
           </div>
         </div>
       </footer>
