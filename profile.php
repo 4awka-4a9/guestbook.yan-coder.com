@@ -162,10 +162,11 @@ $description = "Guestbook profile page by yan-coder maked with php, sql and boot
                 <label for="floatingInput">Upload avatar</label>
             </div> -->
 
-        <div class="input-group">
+        <div class="input-group m-t-b">
             <input type="file" class="form-control d-none" id="fileToUpload" name="fileToUpload" />
 
             <label class="btn btn-primary upload-avatar-btn" for="fileToUpload" id="uploadButtonLabel">
+                <img class="avatar me-2" src="avatars/<?php echo $user["avatar"]; ?>">
                 Upload avatar
             </label>
 

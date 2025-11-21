@@ -123,6 +123,11 @@
         border-radius: 100px;
       }
 
+      .m-t-b {
+        margin-top: 5px;
+        margin-bottom: 5px;
+      }
+
     </style>
 
   </head>
@@ -134,12 +139,17 @@
           class="d-flex flex-column flex-md-row align-items-center pb-3 mb-4 border-bottom"
         >
           <a
-            href="index.html"
+            href="index.php"
             class="d-flex align-items-center link-body-emphasis text-decoration-none"
           >
             <span class="fs-4">Guest Book</span>
           </a>
           <nav class="d-inline-flex mt-2 mt-md-0 ms-md-auto">
+            <a
+              class="btn  btn-outline-secondary me-3 py-2 link-body-emphasis text-decoration-none"
+              href="index.php"
+              >Home</a
+            >
             <a
               class="btn btn-outline-secondary me-3 py-2 link-body-emphasis text-decoration-none"
               href="profile.php"

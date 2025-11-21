@@ -10,6 +10,7 @@ if (empty($_SESSION["user_id"])) {
 
 $stmt = $pdo->prepare(
   "SELECT 
+  id,
   username, 
   first_name, 
   last_name, 
@@ -25,6 +26,14 @@ $stmt->execute(array(
 ));
 
 $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+if ($user === false) {
+    $title = "User Not Found";
+    require_once "header.php";
+    echo "<main><div class='alert alert-danger'>Пользователь с ID " . htmlspecialchars($_GET['id']) . " не найден.</div></main>";
+    require_once "footer.php";
+    exit(); 
+}
 
 $user["username"] = htmlspecialchars($user["username"]);
 $user["email"] = htmlspecialchars($user["email"]);
