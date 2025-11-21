@@ -101,6 +101,7 @@ $description = "Guestbook log in page by yan-coder maked with php, sql and boots
         <input class="btn btn-primary w-100 py-2 submit" type="submit" name="submit" value="Login">
 
         <a href="registration.php">Don't have an account? Register now!</a>
+        <a href="reset_password.php">Reset password</a>
 
         <p class="mt-5 mb-3 text-body-secondary">&copy; yan-coder 2025</p>
 

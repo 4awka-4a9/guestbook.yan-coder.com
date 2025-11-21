@@ -27,7 +27,7 @@ $stmt->execute(array(
 
 $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-if ($user === false) {
+if ($user == false) {
     $title = "User Not Found";
     require_once "header.php";
     echo "<main><div class='alert alert-danger'>Пользователь с ID " . htmlspecialchars($_GET['id']) . " не найден.</div></main>";
