@@ -50,6 +50,8 @@ $stmt->execute();
 $comments = $stmt->fetchAll();
 
 $title = "guestbook.yan-coder.com | home";
+$description = "Guestbook home page by yan-coder maked with php, sql and bootstrap";
+
 
 ?>
 

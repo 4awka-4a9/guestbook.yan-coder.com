@@ -14,11 +14,11 @@ if (!empty($_POST)) {
     $sql_password = "";
     $sql_avatar = "";
     $update = [
-        "username" => $_POST["user_name"], 
-        "user_id" => $_SESSION["user_id"], 
-        "first_name" => $_POST["first_name"], 
-        "last_name" => $_POST["last_name"], 
-        "about_me" => $_POST["about_me"], 
+        "username" => $_POST["user_name"],
+        "user_id" => $_SESSION["user_id"],
+        "first_name" => $_POST["first_name"],
+        "last_name" => $_POST["last_name"],
+        "about_me" => $_POST["about_me"],
     ];
 
     if (empty($_POST["user_name"])) {
@@ -38,7 +38,7 @@ if (!empty($_POST)) {
     // }
 
     if (strlen($_POST["user_name"]) > 100) {
-        $errors[] = "User name if too long";   
+        $errors[] = "User name if too long";
     }
     if (strlen($_POST["first_name"]) > 80) {
         $errors[] = "First name is too long";
@@ -54,55 +54,48 @@ if (!empty($_POST)) {
     }
 
     if (isset($_FILES["fileToUpload"]["name"]) and $_FILES["fileToUpload"]["name"]) {
-      $target_dir = "/avatars/";
-      $extension = pathinfo($_FILES["fileToUpload"]["name"], PATHINFO_EXTENSION);
-      $filename = "avatar{$_SESSION['user_id']}." . $extension;
-      $target_file = $_SERVER['DOCUMENT_ROOT'] . $target_dir . $filename;
-      $uploadOk = 1;
+        $target_dir = "/avatars/";
+        $extension = pathinfo($_FILES["fileToUpload"]["name"], PATHINFO_EXTENSION);
+        $filename = "avatar{$_SESSION['user_id']}." . $extension;
+        $target_file = $_SERVER['DOCUMENT_ROOT'] . $target_dir . $filename;
 
-      $update["avatar"] = $filename;
-      $sql_avatar = ", avatar = :avatar";
+        $update["avatar"] = $filename;
+        $sql_avatar = ", avatar = :avatar";
 
-      $check = getimagesize($_FILES["fileToUpload"]["tmp_name"]);
+        $check = getimagesize($_FILES["fileToUpload"]["tmp_name"]);
 
-      if ($check !== false) {
-          $uploadOk = 1;
-      }
+        if ($check !== false) {
 
-      else {
-          $errors[] = "File is not an image.";
-          $uploadOk = 0;
-      }
+        } else {
 
-      if ($_FILES["fileToUpload"]["size"] > 5000000) {
-          $errors[] = "Sorry, your file is too large.";
-          $uploadOk = 0;
-      }
+            $errors[] = "File is not an image.";
 
-      if (strtolower($extension) != "jpg" && strtolower($extension) != "png" && strtolower($extension) != "jpeg" && strtolower($extension) != "gif") {
-          $errors[] = "Sorry, only JPG, JPEG, PNG & GIF files are allowed.";
-          $uploadOk = 0;
-      } 
-
-      if ($uploadOk == 0) {
-          $errors[] = "Sorry, your file was not uploaded.";
-      }
-
-      else {
-          if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file)) {
-        
-          }
-
-          else {
-              $errors[] = "Sorry, your file was not uploaded.";
-          }
         }
-        
+
+        if ($_FILES["fileToUpload"]["size"] > 5000000) {
+
+            $errors[] = "Sorry, your file is too large.";
+
+        }
+
+        $extension = strtolower($extension);
+
+        if ($extension != "jpg" && $extension != "png" && $extension != "jpeg" && $extension != "gif") {
+
+            $errors[] = "Sorry, only JPG, JPEG, PNG & GIF files are allowed.";
+
+        }
+
+        if (!move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file)) {
+
+            $errors[] = "Sorry, your file was not uploaded.";
+        }
+
     }
 
     if (isset($_POST["password"]) and $_POST["password"]) {
 
-        $update["password"] = sha1($_POST["password"].SALT);
+        $update["password"] = sha1($_POST["password"] . SALT);
         $sql_password = ", password = :password";
     }
 
@@ -113,14 +106,13 @@ if (!empty($_POST)) {
             username = :username, 
             first_name = :first_name, 
             last_name = :last_name, 
-            about_me = :about_me, 
-            password = :password 
+            about_me = :about_me 
+            $sql_password
             $sql_avatar 
             WHERE id = :user_id"
-            );
+        );
 
         $stmt->execute($update);
-        $id = $stmt->fetchColumn();
     }
 }
 
@@ -132,7 +124,8 @@ $stmt = $pdo->prepare(
     about_me, 
     avatar 
     FROM `users` 
-    WHERE id = :user_id");
+    WHERE id = :user_id"
+);
 
 $stmt->execute(array("user_id" => $_SESSION["user_id"]));
 $user = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -142,23 +135,24 @@ $user["first_name"] = htmlspecialchars($user["first_name"]);
 $user["last_name"] = htmlspecialchars($user["last_name"]);
 
 $title = "guestbook.yan-coder.com | " . $user["username"];
+$description = "Guestbook profile page by yan-coder maked with php, sql and bootstrap";
 
 ?>
 
-<?php require_once "header.php";?>
-      <main>
-        
-        <form method="POST" enctype="multipart/form-data">
+<?php require_once "header.php"; ?>
+<main>
 
-            <label class="m-t-b">Edit profile</label>
+    <form method="POST" enctype="multipart/form-data">
 
-            <div style="color: red;">
-                <?php foreach ($errors as $error) :?>
-                    <p><?php echo $error; ?></p>
-                <?php endforeach; ?>
-            </div>
+        <label class="m-t-b">Edit profile</label>
 
-            <!-- <div class="form-floating m-t-b">
+        <div style="color: red;">
+            <?php foreach ($errors as $error): ?>
+                <p><?php echo $error; ?></p>
+            <?php endforeach; ?>
+        </div>
+
+        <!-- <div class="form-floating m-t-b">
                 <input
                     type="file"
                     class="form-control input"
@@ -168,102 +162,60 @@ $title = "guestbook.yan-coder.com | " . $user["username"];
                 <label for="floatingInput">Upload avatar</label>
             </div> -->
 
-            <div class="input-group">
-              <input
-                  type="file"
-                  class="form-control d-none" 
-                  id="fileToUpload"
-                  name="fileToUpload"
-              />
-              
-              <label class="btn btn-primary upload-avatar-btn" for="fileToUpload" id="uploadButtonLabel">
-                  Upload avatar
-              </label>
+        <div class="input-group">
+            <input type="file" class="form-control d-none" id="fileToUpload" name="fileToUpload" />
 
-              <input type="text" class="form-control" id="fileNameDisplay" placeholder="No file selected" readonly>
-            </div>
+            <label class="btn btn-primary upload-avatar-btn" for="fileToUpload" id="uploadButtonLabel">
+                Upload avatar
+            </label>
 
-            <div class="form-floating m-t-b">
-                <input
-                    type="text"
-                    class="form-control input"
-                    id="floatingInput"
-                    placeholder="name@example.com"
-                    name="user_name"
-                    value="<?php echo $user["username"];?>"
-                />
-                <label for="floatingInput">Username</label>
-            </div>
+            <input type="text" class="form-control" id="fileNameDisplay" placeholder="No file selected" readonly>
+        </div>
 
-            <div class="form-floating m-t-b">
-                <input
-                    type="text"
-                    class="form-control input"
-                    id="floatingPassword"
-                    placeholder="last name"
-                    name="first_name" 
-                    required="" 
-                    value="<?php echo $user["first_name"];?>"
-                />
-                <label for="floatingPassword">First name</label>
-            </div>
+        <div class="form-floating m-t-b">
+            <input type="text" class="form-control input" id="floatingInput" placeholder="name@example.com"
+                name="user_name" value="<?php echo $user["username"]; ?>" />
+            <label for="floatingInput">Username</label>
+        </div>
 
-            <div class="form-floating m-t-b">
-                <input
-                    type="text"
-                    class="form-control input"
-                    id="floatingPassword"
-                    placeholder="Last name"
-                    name="last_name" 
-                    required="" 
-                    value="<?php echo $user["last_name"];?>"
-                />
-                <label for="floatingPassword">Last name</label>
-            </div>
+        <div class="form-floating m-t-b">
+            <input type="text" class="form-control input" id="floatingPassword" placeholder="last name"
+                name="first_name" required="" value="<?php echo $user["first_name"]; ?>" />
+            <label for="floatingPassword">First name</label>
+        </div>
 
-            <div class="form-floating m-t-b">
-                <input
-                    type="password"
-                    class="form-control input"
-                    id="floatingPassword"
-                    placeholder="Password"
-                    name="password" 
-                    value=""
-                />
-                <label for="floatingPassword">Password</label>
-            </div>
+        <div class="form-floating m-t-b">
+            <input type="text" class="form-control input" id="floatingPassword" placeholder="Last name" name="last_name"
+                required="" value="<?php echo $user["last_name"]; ?>" />
+            <label for="floatingPassword">Last name</label>
+        </div>
 
-            <div class="form-floating m-t-b">
-                <input
-                    type="password"
-                    class="form-control input"
-                    id="floatingPassword"
-                    placeholder="Password"
-                    name="confirm_password" 
-                    value=""
-                />
-                <label for="floatingPassword">Confirm password</label>
-            </div>
+        <div class="form-floating m-t-b">
+            <input type="password" class="form-control input" id="floatingPassword" placeholder="Password"
+                name="password" value="" />
+            <label for="floatingPassword">Password</label>
+        </div>
 
-            <div class="form-floating m-t-b">
-                <textarea
-                    type="text"
-                    class="form-control input"
-                    id="floatingPassword"
-                    placeholder="About me"
-                    name="about_me"  
-                ><?php echo $user["about_me"];?></textarea>
+        <div class="form-floating m-t-b">
+            <input type="password" class="form-control input" id="floatingPassword" placeholder="Password"
+                name="confirm_password" value="" />
+            <label for="floatingPassword">Confirm password</label>
+        </div>
 
-                <label for="floatingPassword">About me</label>
-            </div>
+        <div class="form-floating m-t-b">
+            <textarea type="text" class="form-control input" id="floatingPassword" placeholder="About me"
+                name="about_me"><?php echo $user["about_me"]; ?></textarea>
 
-            <div>
+            <label for="floatingPassword">About me</label>
+        </div>
 
-                <input class="btn btn-outline-secondary m-t-b" type="submit" name="submit" value="Save">
+        <div>
 
-            </div>
+            <input class="btn btn-outline-secondary m-t-b" type="submit" name="submit" value="Save">
 
-        </form>
+        </div>
 
-      </main>
-<?php require_once "footer.php";?>
+    </form>
+
+</main>
+<?php require_once "footer.php"; ?>

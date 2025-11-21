@@ -8,7 +8,7 @@
       name="author"
       content="Mark Otto, Jacob Thornton, and Bootstrap contributors"
     />
-    <meta name="generator" content="Astro v5.13.2" />
+    <meta name="generator" content="<?php echo $description;?>" />
     <title><?php echo $title;?></title>
 
     <link rel="apple-touch-icon" sizes="180x180" href="img/apple-touch-icon.png">

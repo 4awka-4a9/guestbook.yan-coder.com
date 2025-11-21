@@ -100,6 +100,7 @@ if (!empty($_POST)) {
 }
 
 $title = "guestbook.yan-coder.com | registration";
+$description = "Guestbook registration page by yan-coder maked with php, sql and bootstrap";
 
 ?>
 

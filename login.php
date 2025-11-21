@@ -43,6 +43,8 @@ if (!empty($_POST)) {
 }
 
 $title = "guestbook.yan-coder.com | log in";
+$description = "Guestbook log in page by yan-coder maked with php, sql and bootstrap";
+
 
 ?>
 

@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content="guestbook" />
+    <meta name="description" content="<?php echo $description;?>" />
     <meta
       name="author"
       content="yan-coder"
@@ -134,7 +134,7 @@
           class="d-flex flex-column flex-md-row align-items-center pb-3 mb-4 border-bottom"
         >
           <a
-            href="#"
+            href="index.html"
             class="d-flex align-items-center link-body-emphasis text-decoration-none"
           >
             <span class="fs-4">Guest Book</span>
