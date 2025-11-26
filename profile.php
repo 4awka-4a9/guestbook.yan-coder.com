@@ -93,10 +93,32 @@ if (!empty($_POST)) {
 
     }
 
+    $stmt = $pdo->prepare(
+        "SELECT id 
+        FROM users 
+        WHERE id = :user_id and password = :password"
+        );
+
+    $stmt->execute(array( 
+        "user_id" => $_SESSION["user_id"],
+        "password" => sha1($_POST["old_password"].SALT)
+        ));
+    
+    $id = $stmt->fetchColumn();
+
     if (isset($_POST["password"]) and $_POST["password"]) {
 
-        $update["password"] = sha1($_POST["password"] . SALT);
-        $sql_password = ", password = :password";
+        if ($id != false) {
+
+            $update["password"] = sha1($_POST["password"] . SALT);
+            $sql_password = ", password = :password";
+    
+        }
+
+        else {
+            $errors[] = "Old password is incorrect";
+        }
+
     }
 
     if (empty($errors)) {
@@ -137,6 +159,13 @@ $user["last_name"] = htmlspecialchars($user["last_name"]);
 $title = "guestbook.yan-coder.com | " . $user["username"];
 $description = "Guestbook profile page by yan-coder maked with php, sql and bootstrap";
 
+if ($user["avatar"]) {
+    $avatar = $user["avatar"];
+}
+else {
+    $avatar = "default_avatar.jpg";
+}
+
 ?>
 
 <?php require_once "header.php"; ?>
@@ -166,7 +195,7 @@ $description = "Guestbook profile page by yan-coder maked with php, sql and boot
             <input type="file" class="form-control d-none" id="fileToUpload" name="fileToUpload" />
 
             <label class="btn btn-primary upload-avatar-btn" for="fileToUpload" id="uploadButtonLabel">
-                <img class="avatar me-2" src="avatars/<?php echo $user["avatar"]; ?>">
+                <img class="avatar me-2" src="avatars/<?php echo $avatar; ?>">
                 Upload avatar
             </label>
 
@@ -189,6 +218,12 @@ $description = "Guestbook profile page by yan-coder maked with php, sql and boot
             <input type="text" class="form-control input" id="floatingPassword" placeholder="Last name" name="last_name"
                 required="" value="<?php echo $user["last_name"]; ?>" />
             <label for="floatingPassword">Last name</label>
+        </div>
+
+        <div class="form-floating m-t-b">
+            <input type="password" class="form-control input" id="floatingPassword" placeholder="Password"
+                name="old_password" value="" />
+            <label for="floatingPassword">Old password</label>
         </div>
 
         <div class="form-floating m-t-b">

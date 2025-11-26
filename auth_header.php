@@ -3,12 +3,12 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content="" />
+    <meta name="description" content="<?php echo $description;?>" />
     <meta
       name="author"
       content="Mark Otto, Jacob Thornton, and Bootstrap contributors"
     />
-    <meta name="generator" content="<?php echo $description;?>" />
+    <meta name="generator" content="" />
     <title><?php echo $title;?></title>
 
     <link rel="apple-touch-icon" sizes="180x180" href="img/apple-touch-icon.png">

@@ -41,6 +41,7 @@ $user["first_name"] = htmlspecialchars($user["first_name"]);
 $user["last_name"] = htmlspecialchars($user["last_name"]);
 
 $title = "guestbook.yan-coder.com | " . $user["username"];
+$description = "Guestbook" . $user["username"] . "'s profile page by yan-coder maked with php, sql and bootstrap";
 
 ?>
 
@@ -59,10 +60,21 @@ $title = "guestbook.yan-coder.com | " . $user["username"];
                 $about_me = "None";
               }
 
+              if ($user["avatar"]) {
+                $avatar = $user["avatar"];
+              }
+              else {
+                $avatar = "default_avatar.jpg";
+              }
+
             ?>
 
             <tbody>
 
+                <tr>
+                    <th>Avatar</th>
+                    <td><img class="avatar me-2" src="avatars/<?php echo $avatar; ?>"></td>
+                </tr>
                 <tr>
                     <th>Username</th>
                     <td><?php echo $user["username"];?></td>

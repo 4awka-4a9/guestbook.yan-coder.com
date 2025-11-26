@@ -8,6 +8,11 @@ use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;
 
 require_once("config.php");
+
+if (!empty($_SESSION["user_id"])) {
+    header("location: index.php");
+}
+
 require 'PHPMailer-master/src/Exception.php';
 require 'PHPMailer-master/src/PHPMailer.php';
 require 'PHPMailer-master/src/SMTP.php';
@@ -32,7 +37,7 @@ function sendEmail($to, $subject, $html_body) {
 //        $mail->CharSet = 'UTF-8';
 
         //GMAIL, to create app password visit https://myaccount.google.com/apppasswords
-        $mail->SMTPDebug = SMTP::DEBUG_SERVER;                      //Enable verbose debug output
+        // $mail->SMTPDebug = SMTP::DEBUG_SERVER;                      //Enable verbose debug output
         $mail->isSMTP();                                            //Send using SMTP
         $mail->Host = 'smtp.gmail.com';                     //Set the SMTP server to send through         //Enable SMTP authentication
         $mail->SMTPAuth = true;
@@ -52,7 +57,6 @@ function sendEmail($to, $subject, $html_body) {
         $mail->Body    = $html_body;
 
         $mail->send();
-        echo 'Message has been sent';
     } catch (Exception $e) {
         echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
     }
