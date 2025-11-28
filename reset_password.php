@@ -18,6 +18,20 @@ require 'PHPMailer-master/src/PHPMailer.php';
 require 'PHPMailer-master/src/SMTP.php';
 
 $errors = [];
+$succes = false;
+$secret_link = "";
+
+function generateRandomString($length = 100) {
+    $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    $charactersLength = strlen($characters);
+    $randomString = '';
+
+    for ($i = 0; $i < $length; $i++) {
+        $randomString .= $characters[random_int(0, $charactersLength - 1)];
+    }
+
+    return $randomString;
+}
 
 function sendEmail($to, $subject, $html_body) {
 
@@ -65,24 +79,51 @@ function sendEmail($to, $subject, $html_body) {
 if (!empty($_POST)) {
 
     $stmt = $pdo->prepare(
-      "SELECT email
+      "SELECT email, id
       FROM users 
       WHERE email = :email
       ");
 
     $stmt->execute([':email' => $_POST["email"]]);
-    $user_email = $stmt->fetch(PDO::FETCH_ASSOC);
+    $user_data = $stmt->fetch(PDO::FETCH_ASSOC);
 
     if (empty($_POST["email"])) {
         $errors[] = "Please enter your email";
     }
 
-    if ($user_email == false) {
+    if ($user_data == false) {
         $errors[] = "Email not found";
     }
 
     if (empty($errors)) {
-        sendEmail($_POST["email"], "Reset password", "<p>Hello, my friend</p>");
+
+      $secret_link = generateRandomString();
+
+      $stmt = $pdo->prepare(
+            "UPDATE users SET 
+            reset_password_secret = :secret_code
+            WHERE email = :email"
+        );
+      
+      $stmt->execute(array("secret_code" => $secret_link, "email" => $_POST["email"]));
+
+      $link = '/reset_password_confirm.php?user_id=' . $user_data["id"] . '&secret=' . $secret_link;
+
+      $mailText = <<<TXT
+
+        <p>
+        Hello, you requested a password reset for the guestbook.yan-coder.com. To restore your password, please follow the link below.<br>
+        </p>
+        <a href='$link'>Reset password</a>
+
+      TXT;
+
+      sendEmail($_POST["email"],
+        "Reset password", 
+        $mailText
+      );
+
+        $succes = true;
     }
 
 }
@@ -100,6 +141,18 @@ if (!empty($_POST)) {
           <?php foreach ($errors as $error) :?>
             <p><?php echo $error; ?></p>
           <?php endforeach; ?>
+        </div>
+
+        <div style="color: green;">
+
+            <?php
+            
+              if ($succes == true) {
+                echo "Email sendet!";
+              }
+            
+            ?>
+
         </div>
 
         <div class="form-floating">

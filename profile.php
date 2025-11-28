@@ -97,13 +97,13 @@ if (!empty($_POST)) {
         "SELECT id 
         FROM users 
         WHERE id = :user_id and password = :password"
-        );
+    );
 
-    $stmt->execute(array( 
+    $stmt->execute(array(
         "user_id" => $_SESSION["user_id"],
-        "password" => sha1($_POST["old_password"].SALT)
-        ));
-    
+        "password" => sha1($_POST["old_password"] . SALT)
+    ));
+
     $id = $stmt->fetchColumn();
 
     if (isset($_POST["password"]) and $_POST["password"]) {
@@ -112,10 +112,8 @@ if (!empty($_POST)) {
 
             $update["password"] = sha1($_POST["password"] . SALT);
             $sql_password = ", password = :password";
-    
-        }
 
-        else {
+        } else {
             $errors[] = "Old password is incorrect";
         }
 
@@ -161,8 +159,7 @@ $description = "Guestbook profile page by yan-coder maked with php, sql and boot
 
 if ($user["avatar"]) {
     $avatar = $user["avatar"];
-}
-else {
+} else {
     $avatar = "default_avatar.jpg";
 }
 
