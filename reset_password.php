@@ -10,7 +10,7 @@ use PHPMailer\PHPMailer\Exception;
 require_once("config.php");
 
 if (!empty($_SESSION["user_id"])) {
-    header("location: index.php");
+  header("location: index.php");
 }
 
 require 'PHPMailer-master/src/Exception.php';
@@ -21,25 +21,27 @@ $errors = [];
 $succes = false;
 $secret_link = "";
 
-function generateRandomString($length = 100) {
-    $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-    $charactersLength = strlen($characters);
-    $randomString = '';
+function generateRandomString($length = 100)
+{
+  $characters = '0123456789abcdefghijklmnopqrstuvwxyz';
+  $charactersLength = strlen($characters);
+  $randomString = '';
 
-    for ($i = 0; $i < $length; $i++) {
-        $randomString .= $characters[random_int(0, $charactersLength - 1)];
-    }
+  for ($i = 0; $i < $length; $i++) {
+    $randomString .= $characters[random_int(0, $charactersLength - 1)];
+  }
 
-    return $randomString;
+  return $randomString;
 }
 
-function sendEmail($to, $subject, $html_body) {
+function sendEmail($to, $subject, $html_body)
+{
 
-    $mail = new PHPMailer(true);
+  $mail = new PHPMailer(true);
 
-    try {
+  try {
 
-        //OUTLOOK, to create app password visit https://stackoverflow.com/questions/79057624/smtpauthenticationerror-basic-authentication-is-disabled-for-outlook-live-com
+    //OUTLOOK, to create app password visit https://stackoverflow.com/questions/79057624/smtpauthenticationerror-basic-authentication-is-disabled-for-outlook-live-com
 //        $mail->SMTPDebug = SMTP::DEBUG_SERVER;                      //Enable verbose debug output
 //        $mail->isSMTP();                                            //Send using SMTP
 //        $mail->Host       = 'smtp-mail.outlook.com';                     //Set the SMTP server to send through
@@ -50,66 +52,67 @@ function sendEmail($to, $subject, $html_body) {
 //        $mail->Port       = 587;                                    //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
 //        $mail->CharSet = 'UTF-8';
 
-        //GMAIL, to create app password visit https://myaccount.google.com/apppasswords
-        // $mail->SMTPDebug = SMTP::DEBUG_SERVER;                      //Enable verbose debug output
-        $mail->isSMTP();                                            //Send using SMTP
-        $mail->Host = 'smtp.gmail.com';                     //Set the SMTP server to send through         //Enable SMTP authentication
-        $mail->SMTPAuth = true;
-        $mail->Username   = EMAIL_LOGIN;                     //SMTP username
-        $mail->Password   = EMAIL_PASSWORD;                               //SMTP password
-        $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;            //Enable implicit TLS encryption
-        $mail->Port       = 587;                                    //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
-        $mail->CharSet = 'UTF-8';
+    //GMAIL, to create app password visit https://myaccount.google.com/apppasswords
+    // $mail->SMTPDebug = SMTP::DEBUG_SERVER;                      //Enable verbose debug output
+    $mail->isSMTP();                                            //Send using SMTP
+    $mail->Host = 'smtp.gmail.com';                     //Set the SMTP server to send through         //Enable SMTP authentication
+    $mail->SMTPAuth = true;
+    $mail->Username = EMAIL_LOGIN;                     //SMTP username
+    $mail->Password = EMAIL_PASSWORD;                               //SMTP password
+    $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;            //Enable implicit TLS encryption
+    $mail->Port = 587;                                    //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
+    $mail->CharSet = 'UTF-8';
 
-        //Recipients
-        $mail->setFrom(EMAIL_LOGIN, 'Guestbook');
-        $mail->addAddress($to);     //Add a recipient
+    //Recipients
+    $mail->setFrom(EMAIL_LOGIN, 'Guestbook');
+    $mail->addAddress($to);     //Add a recipient
 
-        //Content
-        $mail->isHTML(true);                                  //Set email format to HTML
-        $mail->Subject = $subject;
-        $mail->Body    = $html_body;
+    //Content
+    $mail->isHTML(true);                                  //Set email format to HTML
+    $mail->Subject = $subject;
+    $mail->Body = $html_body;
 
-        $mail->send();
-    } catch (Exception $e) {
-        echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
-    }
+    $mail->send();
+  } catch (Exception $e) {
+    echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
+  }
 }
 
 if (!empty($_POST)) {
 
-    $stmt = $pdo->prepare(
-      "SELECT email, id
+  $stmt = $pdo->prepare(
+    "SELECT email, id
       FROM users 
       WHERE email = :email
-      ");
+      "
+  );
 
-    $stmt->execute([':email' => $_POST["email"]]);
-    $user_data = $stmt->fetch(PDO::FETCH_ASSOC);
+  $stmt->execute([':email' => $_POST["email"]]);
+  $user_data = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    if (empty($_POST["email"])) {
-        $errors[] = "Please enter your email";
-    }
+  if (empty($_POST["email"])) {
+    $errors[] = "Please enter your email";
+  }
 
-    if ($user_data == false) {
-        $errors[] = "Email not found";
-    }
+  if ($user_data == false) {
+    $errors[] = "Email not found";
+  }
 
-    if (empty($errors)) {
+  if (empty($errors)) {
 
-      $secret_link = generateRandomString();
+    $secret_link = generateRandomString();
 
-      $stmt = $pdo->prepare(
-            "UPDATE users SET 
+    $stmt = $pdo->prepare(
+      "UPDATE users SET 
             reset_password_secret = :secret_code
             WHERE email = :email"
-        );
-      
-      $stmt->execute(array("secret_code" => $secret_link, "email" => $_POST["email"]));
+    );
 
-      $link = '/reset_password_confirm.php?user_id=' . $user_data["id"] . '&secret=' . $secret_link;
+    $stmt->execute(array("secret_code" => $secret_link, "email" => $_POST["email"]));
 
-      $mailText = <<<TXT
+    $link = 'https://guestbook.yan-coder.com/reset_password_confirm.php?user_id=' . $user_data["id"] . '&secret=' . $secret_link;
+
+    $mailText = <<<TXT
 
         <p>
         Hello, you requested a password reset for the guestbook.yan-coder.com. To restore your password, please follow the link below.<br>
@@ -118,61 +121,68 @@ if (!empty($_POST)) {
 
       TXT;
 
-      sendEmail($_POST["email"],
-        "Reset password", 
-        $mailText
-      );
+    sendEmail(
+      $_POST["email"],
+      "Reset password",
+      $mailText
+    );
 
-        $succes = true;
-    }
+    $succes = true;
+
+  }
 
 }
 
 ?>
 
-<?php require_once "auth_header.php";?>
+<?php require_once "auth_header.php"; ?>
 
-    <main class="form-signin w-100 m-auto">
-      <form method="POST">
+<main class="form-signin w-100 m-auto">
+  <form method="POST">
 
-        <h1 class="h3 mb-3 fw-normal">Reset password</h1>
+    <h1 class="h3 mb-3 fw-normal">Reset password</h1>
 
-        <div style="color: red;">
-          <?php foreach ($errors as $error) :?>
-            <p><?php echo $error; ?></p>
-          <?php endforeach; ?>
-        </div>
+    <div style="color: red;">
+      <?php foreach ($errors as $error): ?>
+        <p><?php echo $error; ?></p>
+      <?php endforeach; ?>
+    </div>
 
-        <div style="color: green;">
+    <div style="color: green;">
 
-            <?php
-            
-              if ($succes == true) {
-                echo "Email sendet!";
-              }
-            
-            ?>
+      <?php
 
-        </div>
+      if ($succes == true) {
+        echo "Email sendet!";
+      }
 
-        <div class="form-floating">
-          <input
-            type="text"
-            class="form-control input"
-            id="floatingPassword"
-            placeholder="Email"
-            name="email" 
-            required="" 
-          />
-          <label for="floatingPassword">Email adress</label>
-        </div>
+      ?>
 
-        <input class="btn btn-primary w-100 py-2 submit" type="submit" name="submit" value="Send reset password link">
+    </div>
 
-        <p class="mt-5 mb-3 text-body-secondary">&copy; yan-coder 2025</p>
+    <div class="form-floating">
+      <input type="text" class="form-control input" id="floatingPassword" placeholder="Email" name="email"
+        required="" />
+      <label for="floatingPassword">Email adress</label>
+    </div>
 
-        <!-- Yandex.Metrika informer --> <a href="https://metrika.yandex.ru/stat/?id=105184923&amp;from=informer" target="_blank" rel="nofollow">     <img src="https://informer.yandex.ru/informer/105184923/3_1_FFFFFFFF_EFEFEFFF_0_pageviews"          style="width:88px; height:31px; border:0;"          alt="Яндекс.Метрика"          title="Яндекс.Метрика: данные за сегодня (просмотры, визиты и уникальные посетители)"         class="ym-advanced-informer" data-cid="105184923" data-lang="ru"/> </a> <!-- /Yandex.Metrika informer -->  <!-- Yandex.Metrika counter --> <script type="text/javascript">     (function(m,e,t,r,i,k,a){         m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};         m[i].l=1*new Date();         for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}         k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)     })(window, document,'script','https://mc.yandex.ru/metrika/tag.js?id=105184923', 'ym');      ym(105184923, 'init', {ssr:true, webvisor:true, clickmap:true, ecommerce:"dataLayer", accurateTrackBounce:true, trackLinks:true}); </script> <noscript><div><img src="https://mc.yandex.ru/watch/105184923" style="position:absolute; left:-9999px;" alt="" /></div></noscript> <!-- /Yandex.Metrika counter -->   
+    <input class="btn btn-primary w-100 py-2 submit" type="submit" name="submit" value="Send reset password link">
 
-      </form>
-    </main>
-<?php require_once "auth_footer.php";?>
+    <p class="mt-5 mb-3 text-body-secondary">&copy; yan-coder 2025</p>
+
+    <!-- Yandex.Metrika informer --> <a href="https://metrika.yandex.ru/stat/?id=105184923&amp;from=informer"
+      target="_blank" rel="nofollow"> <img
+        src="https://informer.yandex.ru/informer/105184923/3_1_FFFFFFFF_EFEFEFFF_0_pageviews"
+        style="width:88px; height:31px; border:0;" alt="Яндекс.Метрика"
+        title="Яндекс.Метрика: данные за сегодня (просмотры, визиты и уникальные посетители)"
+        class="ym-advanced-informer" data-cid="105184923" data-lang="ru" /> </a> <!-- /Yandex.Metrika informer -->
+    <!-- Yandex.Metrika counter -->
+    <script
+      type="text/javascript">     (function (m, e, t, r, i, k, a) { m[i] = m[i] || function () { (m[i].a = m[i].a || []).push(arguments) }; m[i].l = 1 * new Date(); for (var j = 0; j < document.scripts.length; j++) { if (document.scripts[j].src === r) { return; } } k = e.createElement(t), a = e.getElementsByTagName(t)[0], k.async = 1, k.src = r, a.parentNode.insertBefore(k, a) })(window, document, 'script', 'https://mc.yandex.ru/metrika/tag.js?id=105184923', 'ym'); ym(105184923, 'init', { ssr: true, webvisor: true, clickmap: true, ecommerce: "dataLayer", accurateTrackBounce: true, trackLinks: true }); </script>
+    <noscript>
+      <div><img src="https://mc.yandex.ru/watch/105184923" style="position:absolute; left:-9999px;" alt="" /></div>
+    </noscript> <!-- /Yandex.Metrika counter -->
+
+  </form>
+</main>
+<?php require_once "auth_footer.php"; ?>
