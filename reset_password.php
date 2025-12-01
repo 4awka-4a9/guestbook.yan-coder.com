@@ -9,6 +9,9 @@ use PHPMailer\PHPMailer\Exception;
 
 require_once("config.php");
 
+$title = "guestbook.yan-coder.com | password reset";
+$description = "Guestbook reset password page by yan-coder maked with php, sql and bootstrap";
+
 if (!empty($_SESSION["user_id"])) {
   header("location: index.php");
 }

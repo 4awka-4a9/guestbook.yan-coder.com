@@ -4,6 +4,9 @@ require_once("config.php");
 
 $current_form = "";
 
+$title = "guestbook.yan-coder.com | confirm password reset";
+$description = "Guestbook confirm reset password page by yan-coder maked with php, sql and bootstrap";
+
 $errors = [];
 
 $form = <<<TXT
@@ -97,6 +100,8 @@ if (!empty($_POST)) {
             ");
 
         $stmt->execute(['user_id' => $_GET["user_id"], 'reset_password_secret' => $_GET["secret"], 'password' => $_POST["password"]]);
+
+        header("location: login.php");
 
     }
 
