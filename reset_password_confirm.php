@@ -99,7 +99,7 @@ if (!empty($_POST)) {
             WHERE id = :user_id AND reset_password_secret = :reset_password_secret
             ");
 
-        $stmt->execute(['user_id' => $_GET["user_id"], 'reset_password_secret' => $_GET["secret"], 'password' => $_POST["password"]]);
+        $stmt->execute(['user_id' => $_GET["user_id"], 'reset_password_secret' => $_GET["secret"], 'password' => sha1($_POST["password"].SALT)]);
 
         header("location: login.php");
 

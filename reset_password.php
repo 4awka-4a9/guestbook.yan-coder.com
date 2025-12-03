@@ -108,10 +108,10 @@ if (!empty($_POST)) {
     $stmt = $pdo->prepare(
       "UPDATE users SET 
             reset_password_secret = :secret_code
-            WHERE email = :email"
+            WHERE id = :user_id"
     );
 
-    $stmt->execute(array("secret_code" => $secret_link, "email" => $_POST["email"]));
+    $stmt->execute(array("secret_code" => $secret_link, 'user_id' => $user_data["id"]));
 
     $link = 'https://guestbook.yan-coder.com/reset_password_confirm.php?user_id=' . $user_data["id"] . '&secret=' . $secret_link;
 
@@ -166,7 +166,7 @@ if (!empty($_POST)) {
     <div class="form-floating">
       <input type="text" class="form-control input" id="floatingPassword" placeholder="Email" name="email"
         required="" />
-      <label for="floatingPassword">Email adress</label>
+      <label for="floatingPassword">Email address</label>
     </div>
 
     <input class="btn btn-primary w-100 py-2 submit" type="submit" name="submit" value="Send reset password link">

@@ -56,7 +56,7 @@ if (!empty($_POST)) {
     if (isset($_FILES["fileToUpload"]["name"]) and $_FILES["fileToUpload"]["name"]) {
         $target_dir = "/avatars/";
         $extension = pathinfo($_FILES["fileToUpload"]["name"], PATHINFO_EXTENSION);
-        $filename = "avatar{$_SESSION['user_id']}." . $extension;
+        $filename = "avatar{$_SESSION['user_id']}." . strtolower($extension);
         $target_file = $_SERVER['DOCUMENT_ROOT'] . $target_dir . $filename;
 
         $update["avatar"] = $filename;

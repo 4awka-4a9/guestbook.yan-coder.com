@@ -140,7 +140,7 @@ $description = "Guestbook registration page by yan-coder maked with php, sql and
             required="" 
             value="<?php echo (!empty($_POST["email"]) ? $_POST["email"] : ''); ?>"
           />
-          <label for="floatingPassword">Email adress</label>
+          <label for="floatingPassword">Email address</label>
         </div>
 
         <div class="form-floating">
