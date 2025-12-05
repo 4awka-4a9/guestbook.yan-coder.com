@@ -3,7 +3,7 @@
 error_reporting(E_ALL);
 ini_set("display_errors", 1);
 
-require_once("config.php");
+require_once("core.php");
 if (empty($_SESSION["user_id"])) {
     header("location: login.php");
 }
@@ -242,9 +242,26 @@ if ($user["avatar"]) {
             <label for="floatingPassword">About me</label>
         </div>
 
-        <div>
 
-            <input class="btn btn-outline-secondary m-t-b" type="submit" name="submit" value="Save">
+        <div class="col-sm-12" id="htmlTarget">
+
+            <label for="datetimepicker1Input" class="form-label">Picker</label>
+
+            <div class="input-group log-event" id="datetimepicker1" data-td-target-input="nearest"
+                data-td-target-toggle="nearest">
+
+                <input id="datetimepicker1Input" type="text" class="form-control" data-td-target="#datetimepicker1">
+
+                <span class="input-group-text" data-td-target="#datetimepicker1" data-td-toggle="datetimepicker">
+                    1
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <input class="btn btn-outline-secondary m-t-b" type="submit" name="submit" value="Save">
 
         </div>
 

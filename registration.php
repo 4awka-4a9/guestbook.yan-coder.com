@@ -3,7 +3,7 @@
 error_reporting(E_ALL);
 ini_set("display_errors", 1);
 
-require_once("config.php");
+require_once("core.php");
 if (!empty($_SESSION["user_id"])) {
     header("location: registration.php");
 }
@@ -54,11 +54,6 @@ if (!empty($_POST)) {
     }
     if ($_POST["password"] !== $_POST["confirm_password"]) {
         $errors[] = "Your confirm password is not match password";
-    }
-    function validateEMAIL($email) {
-        $v = "/[a-zA-Z0-9_.+ -]+@[a-zA-Z0-9-]+\.[a-zA-Z]+/";
-
-        return (bool) preg_match($v, $email);
     }
 
     if (validateEMAIL($email) == false) {

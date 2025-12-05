@@ -3,7 +3,7 @@
 error_reporting(E_ALL);
 ini_set("display_errors", 1);
 
-require_once("config.php");
+require_once("core.php");
 if (!empty($_SESSION["user_id"])) {
   header("location: index.php");
 }
