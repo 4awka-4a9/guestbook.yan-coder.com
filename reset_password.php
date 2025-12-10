@@ -91,7 +91,7 @@ if (!empty($_POST)) {
       <?php
 
       if ($succes == true) {
-        echo "Email sendet!";
+        echo "Email sent!";
       }
 
       ?>
