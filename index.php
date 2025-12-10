@@ -21,7 +21,7 @@ if (!empty($_POST["comment"])) {
         ));
     }   
 
-if (isset($_GET["action"]) && $_GET["action"] == "delete_comment") {
+if (isset($_POST["action"]) && $_POST["action"] == "delete_comment") {
 
     $stmt = $pdo->prepare(
       "DELETE FROM `comments` 
@@ -29,7 +29,7 @@ if (isset($_GET["action"]) && $_GET["action"] == "delete_comment") {
 
     $stmt->execute(array(
       "user_id" => $_SESSION["user_id"], 
-      "id" => $_GET["comment_id"]
+      "id" => $_POST["comment_id"]
     ));
 
     header("location: index.php");
@@ -106,7 +106,21 @@ $description = "Guestbook home page by yan-coder maked with php, sql and bootstr
             $delete_comment = "";
 
             if ($_SESSION["user_id"] == $comment["user_id"]) {
-                $delete_comment = '<a href="index.php?action=delete_comment&comment_id=' . htmlspecialchars($comment["id"]) . '" class="ms-auto">Delete</a>';
+
+                $delete_comment = <<<TXT
+
+                <div class="ms-auto">
+                    <form method="POST" action="index.php" class="m-0">
+                        <input type="hidden" name="action" value="delete_comment">
+                        <input type="hidden" name="comment_id" value="{$comment["id"]}">
+                        <button type="submit" class="btn btn-danger btn-sm">
+                            Delete
+                        </button>
+                    </form>
+                </div>
+
+                TXT;
+
             }
             
             $commentTemplate = <<<TXT
