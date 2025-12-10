@@ -1,5 +1,7 @@
-import { TempusDominus } from '@eonasdan/tempus-dominus';
+new tempusDominus.TempusDominus(document.getElementById('datetimepicker1'), {
 
-new TempusDominus(document.getElementById('datetimepicker1'), {
-  //put your config here
+  localization: {
+    format: 'yyyy-MM-dd',
+  }
+  
 });

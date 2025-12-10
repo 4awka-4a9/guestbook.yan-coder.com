@@ -29,9 +29,8 @@
     <!-- Tempus Dominus Styles -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@eonasdan/tempus-dominus@6.9.4/dist/css/tempus-dominus.min.css" crossorigin="anonymous">
 
-    <script src="js/birth_day_picker.js"></script>
-
     <link href="css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <meta name="theme-color" content="#712cf9" />
     <link href="css/main.css" rel="stylesheet" />
     <style>

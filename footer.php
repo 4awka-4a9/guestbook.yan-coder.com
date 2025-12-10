@@ -22,5 +22,6 @@
       src="js/bootstrap.bundle.min.js"
       class="astro-vvvwv3sm"
     ></script>
+    <script src="js/birth_day_picker.js"></script>
   </body>
 </html>

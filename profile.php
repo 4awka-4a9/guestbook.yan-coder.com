@@ -13,6 +13,9 @@ if (!empty($_POST)) {
 
     $sql_password = "";
     $sql_avatar = "";
+    $sql_birthday = "";
+    $sql_city = "";
+
     $update = [
         "username" => $_POST["user_name"],
         "user_id" => $_SESSION["user_id"],
@@ -51,6 +54,17 @@ if (!empty($_POST)) {
     // }
     if ($_POST["password"] !== $_POST["confirm_password"]) {
         $errors[] = "Your confirm password is not match password";
+    }
+
+    $update["city"] = $_POST["city"] ?? "";
+    $update["birthday"] = $_POST["birthday"] ?? "";
+
+    if (!empty($update["city"])) {
+        $sql_city = ", city = :city";
+    }
+
+    if (!empty($update["birthday"])) {
+        $sql_birthday = ", birthday = :birthday";
     }
 
     if (isset($_FILES["fileToUpload"]["name"]) and $_FILES["fileToUpload"]["name"]) {
@@ -128,7 +142,9 @@ if (!empty($_POST)) {
             last_name = :last_name, 
             about_me = :about_me 
             $sql_password
-            $sql_avatar 
+            $sql_avatar
+            $sql_city
+            $sql_birthday 
             WHERE id = :user_id"
         );
 
@@ -142,7 +158,9 @@ $stmt = $pdo->prepare(
     first_name, 
     last_name, 
     about_me, 
-    avatar 
+    avatar,
+    city,
+    birthday
     FROM `users` 
     WHERE id = :user_id"
 );
@@ -236,6 +254,12 @@ if ($user["avatar"]) {
         </div>
 
         <div class="form-floating m-t-b">
+            <input type="text" class="form-control input" id="floatingPassword" placeholder="City"
+                name="city" value="<?php echo $user["city"]; ?>" />
+            <label for="floatingPassword">City</label>
+        </div>
+
+        <div class="form-floating m-t-b">
             <textarea type="text" class="form-control input" id="floatingPassword" placeholder="About me"
                 name="about_me"><?php echo $user["about_me"]; ?></textarea>
 
@@ -243,17 +267,14 @@ if ($user["avatar"]) {
         </div>
 
 
-        <div class="col-sm-12" id="htmlTarget">
+        <div class="col-sm-12 m-t-b" id="htmlTarget">
 
-            <label for="datetimepicker1Input" class="form-label">Picker</label>
+            <div class="input-group log-event" id="datetimepicker1" data-td-target-input="nearest" data-td-disable-time="true">
 
-            <div class="input-group log-event" id="datetimepicker1" data-td-target-input="nearest"
-                data-td-target-toggle="nearest">
+                <input id="datetimepicker1Input" type="text" class="form-control input" data-td-target="#datetimepicker1" placeholder="Birthday" name="birthday" value="<?php echo $user["birthday"]; ?>">
 
-                <input id="datetimepicker1Input" type="text" class="form-control" data-td-target="#datetimepicker1">
-
-                <span class="input-group-text" data-td-target="#datetimepicker1" data-td-toggle="datetimepicker">
-                    1
+                <span class="input-group-text" data-td-target="#datetimepicker1" data-td-toggle="datepicker">
+                    <i class="fa-regular fa-calendar"></i>
                 </span>
 
             </div>
