@@ -13,8 +13,6 @@ if (!empty($_POST)) {
 
     $sql_password = "";
     $sql_avatar = "";
-    $sql_birthday = "";
-    $sql_city = "";
 
     $update = [
         "username" => $_POST["user_name"],
@@ -22,6 +20,8 @@ if (!empty($_POST)) {
         "first_name" => $_POST["first_name"],
         "last_name" => $_POST["last_name"],
         "about_me" => $_POST["about_me"],
+        "city" => $_POST["city"],
+        "birthday" => $_POST["birthday"]
     ];
 
     if (empty($_POST["user_name"])) {
@@ -32,6 +32,12 @@ if (!empty($_POST)) {
     }
     if (empty($_POST["last_name"])) {
         $errors[] = "Please enter last Name";
+    }
+    if (empty($_POST["city"])) {
+        $errors[] = "Please enter city";
+    }
+    if (empty($_POST["birthday"])) {
+        $errors[] = "Please enter your birthday";
     }
     // if (empty($_POST["password"])) {
     //     $errors[] = "Please enter password";
@@ -54,17 +60,6 @@ if (!empty($_POST)) {
     // }
     if ($_POST["password"] !== $_POST["confirm_password"]) {
         $errors[] = "Your confirm password is not match password";
-    }
-
-    $update["city"] = $_POST["city"] ?? "";
-    $update["birthday"] = $_POST["birthday"] ?? "";
-
-    if (!empty($update["city"])) {
-        $sql_city = ", city = :city";
-    }
-
-    if (!empty($update["birthday"])) {
-        $sql_birthday = ", birthday = :birthday";
     }
 
     if (isset($_FILES["fileToUpload"]["name"]) and $_FILES["fileToUpload"]["name"]) {
@@ -140,11 +135,11 @@ if (!empty($_POST)) {
             username = :username, 
             first_name = :first_name, 
             last_name = :last_name, 
-            about_me = :about_me 
+            about_me = :about_me,
+            city = :city,
+            birthday = :birthday
             $sql_password
             $sql_avatar
-            $sql_city
-            $sql_birthday 
             WHERE id = :user_id"
         );
 
