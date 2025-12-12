@@ -5,38 +5,40 @@ ini_set("display_errors", 1);
 
 require_once("core.php");
 if (empty($_SESSION["user_id"])) {
-    header("location: login.php");
+  header("location: login.php");
 }
 
-if (!empty($_POST["comment"])) {
-        $stmt = $pdo->prepare(
-          "INSERT INTO comments
+if (isset($_POST["action"]) && $_POST["action"] == "post_comment") {
+  $stmt = $pdo->prepare(
+    "INSERT INTO comments
           (`user_id`, `comment`) 
           VALUES
-          (:user_id, :comment)");
+          (:user_id, :comment)"
+  );
 
-        $stmt->execute(array(
-          "user_id" => $_SESSION["user_id"], 
-          "comment" => $_POST["comment"]
-        ));
-    }   
+  $stmt->execute(array(
+    "user_id" => $_SESSION["user_id"],
+    "comment" => $_POST["comment"]
+  ));
+}
 
 if (isset($_POST["action"]) && $_POST["action"] == "delete_comment") {
 
-    $stmt = $pdo->prepare(
-      "DELETE FROM `comments` 
-      WHERE id = :id AND user_id = :user_id");
+  $stmt = $pdo->prepare(
+    "DELETE FROM `comments` 
+      WHERE id = :id AND user_id = :user_id"
+  );
 
-    $stmt->execute(array(
-      "user_id" => $_SESSION["user_id"], 
-      "id" => $_POST["comment_id"]
-    ));
+  $stmt->execute(array(
+    "user_id" => $_SESSION["user_id"],
+    "id" => $_POST["comment_id"]
+  ));
 
-    header("location: index.php");
+  header("location: index.php");
 }
 
 $stmt = $pdo->prepare(
-    "SELECT users.username, 
+  "SELECT users.username, 
     comments.comment, 
     comments.created_at, 
     users.avatar, comments.id, 
@@ -44,7 +46,8 @@ $stmt = $pdo->prepare(
     FROM `comments` 
     LEFT JOIN users ON user_id=users.id 
     ORDER BY comments.id DESC;
-  ");
+  "
+);
 
 $stmt->execute();
 $comments = $stmt->fetchAll();
@@ -55,59 +58,60 @@ $description = "Guestbook home page by yan-coder maked with php, sql and bootstr
 
 ?>
 
-      <?php require_once "header.php";?>
+<?php require_once "header.php"; ?>
 
-      <main>
-        
-        <div id="#comments-form"><h3>Please add your comment</h3>
+<main>
 
-        <form method="POST" action="index.php">
+  <div id="#comments-form">
+    <h3>Please add your comment</h3>
 
-            <div>
+    <form method="POST" action="index.php">
 
-                <label>Comment</label>
-                <div>
-                    <textarea class="form-control textarea" name="comment"></textarea>
-                </div>
+      <div>
 
-            </div>
+        <label>Comment</label>
+        <div>
+          <textarea class="form-control textarea" name="comment"></textarea>
+        </div>
 
-            <div>
+      </div>
 
-                <br>
-                <input class="btn btn-outline-secondary"type="submit" name="submit" value="Save">
+      <div>
 
-            </div>
+        <br>
+        <input type="hidden" name="action" value="post_comment">
+        <input class="btn btn-outline-secondary" type="submit" name="submit" value="Save">
 
-        </form>
+      </div>
 
-        </div>  
+    </form>
 
-        <div id="#comments-panel">
+  </div>
 
-          <h3 class="commentsTitle">Comments:</h3>
+  <div id="#comments-panel">
 
-            <?php foreach ( $comments as $comment ) : ?>
+    <h3 class="commentsTitle">Comments:</h3>
 
-            <?php
+    <?php foreach ($comments as $comment): ?>
 
-            $comment["comment"] = htmlspecialchars($comment["comment"]);
-            $comment["username"] = htmlspecialchars($comment["username"]);
+      <?php
 
-            $comment["comment"] = preg_replace('~https?://[^\s]+|www\.[^\s]+~i', '<a href="$0">$0</a>', $comment["comment"]);
+      $comment["comment"] = htmlspecialchars($comment["comment"]);
+      $comment["username"] = htmlspecialchars($comment["username"]);
 
-            if ($comment["avatar"]) {
-              $avatar = $comment["avatar"];
-            }
-            else {
-              $avatar = "default_avatar.jpg";
-            }
+      $comment["comment"] = preg_replace('~https?://[^\s]+|www\.[^\s]+~i', '<a href="$0">$0</a>', $comment["comment"]);
 
-            $delete_comment = "";
+      if ($comment["avatar"]) {
+        $avatar = $comment["avatar"];
+      } else {
+        $avatar = "default_avatar.jpg";
+      }
 
-            if ($_SESSION["user_id"] == $comment["user_id"]) {
+      $delete_comment = "";
 
-                $delete_comment = <<<TXT
+      if ($_SESSION["user_id"] == $comment["user_id"]) {
+
+        $delete_comment = <<<TXT
 
                 <div class="ms-auto">
                     <form method="POST" action="index.php" class="m-0">
@@ -121,9 +125,9 @@ $description = "Guestbook home page by yan-coder maked with php, sql and bootstr
 
                 TXT;
 
-            }
-            
-            $commentTemplate = <<<TXT
+      }
+
+      $commentTemplate = <<<TXT
             <div class="card">
               <div class="card-header d-flex align-items-center">
                 <img class="avatar me-2" src="avatars/{$avatar}">
@@ -142,13 +146,13 @@ $description = "Guestbook home page by yan-coder maked with php, sql and bootstr
               </div>
             </div>
             TXT;
-            
-            ?>
 
-            <?php echo $commentTemplate;?>
-            <?php endforeach; ?>
+      ?>
 
-        </div>
+      <?php echo $commentTemplate; ?>
+    <?php endforeach; ?>
 
-      </main>
-<?php require_once "footer.php";?>
+  </div>
+
+</main>
+<?php require_once "footer.php"; ?>

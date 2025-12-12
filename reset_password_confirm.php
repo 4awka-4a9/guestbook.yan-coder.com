@@ -36,6 +36,7 @@ $form = <<<TXT
           <label for="floatingPassword">Confirm password</label>
     </div>
 
+    <input type="hidden" name="action" value="confirm_password_reset">
     <input class="btn btn-primary w-100 py-2 submit" type="submit" name="submit" value="Reset password">
 
     <p class="mt-5 mb-3 text-body-secondary">&copy; yan-coder 2025</p>
@@ -92,16 +93,20 @@ if (!empty($_POST)) {
         $errors[] = "Your confirm password is not match password";
     }
     if (empty($errors)) {
+    
+        if (isset($_POST["action"]) && $_POST["action"] == "confirm_password_reset") {
 
-        $stmt = $pdo->prepare(
-    "UPDATE users
-            SET password = :password 
-            WHERE id = :user_id AND reset_password_secret = :reset_password_secret
-            ");
+          $stmt = $pdo->prepare(
+      "UPDATE users
+              SET password = :password 
+              WHERE id = :user_id AND reset_password_secret = :reset_password_secret
+              ");
 
-        $stmt->execute(['user_id' => $_GET["user_id"], 'reset_password_secret' => $_GET["secret"], 'password' => sha1($_POST["password"].SALT)]);
+          $stmt->execute(['user_id' => $_GET["user_id"], 'reset_password_secret' => $_GET["secret"], 'password' => sha1($_POST["password"].SALT)]);
 
-        header("location: login.php");
+          header("location: login.php");
+
+        }
 
     }
 

@@ -128,7 +128,7 @@ if (!empty($_POST)) {
 
     }
 
-    if (empty($errors)) {
+    if (isset($_POST["action"]) && $_POST["action"] == "save_changes") {
 
         $stmt = $pdo->prepare(
             "UPDATE users SET 
@@ -192,14 +192,14 @@ if ($user["avatar"]) {
         </div>
 
         <!-- <div class="form-floating m-t-b">
-                <input
-                    type="file"
-                    class="form-control input"
-                    id="fileToUpload"
-                    name="fileToUpload"
-                />
-                <label for="floatingInput">Upload avatar</label>
-            </div> -->
+                    <input
+                        type="file"
+                        class="form-control input"
+                        id="fileToUpload"
+                        name="fileToUpload"
+                    />
+                    <label for="floatingInput">Upload avatar</label>
+                </div> -->
 
         <div class="input-group m-t-b">
             <input type="file" class="form-control d-none" id="fileToUpload" name="fileToUpload" />
@@ -249,8 +249,8 @@ if ($user["avatar"]) {
         </div>
 
         <div class="form-floating m-t-b">
-            <input type="text" class="form-control input" id="floatingPassword" placeholder="City"
-                name="city" value="<?php echo $user["city"]; ?>" />
+            <input type="text" class="form-control input" id="floatingPassword" placeholder="City" name="city"
+                value="<?php echo $user["city"]; ?>" />
             <label for="floatingPassword">City</label>
         </div>
 
@@ -264,9 +264,12 @@ if ($user["avatar"]) {
 
         <div class="col-sm-12 m-t-b" id="htmlTarget">
 
-            <div class="input-group log-event" id="datetimepicker1" data-td-target-input="nearest" data-td-disable-time="true">
+            <div class="input-group log-event" id="datetimepicker1" data-td-target-input="nearest"
+                data-td-disable-time="true">
 
-                <input id="datetimepicker1Input" type="text" class="form-control input" data-td-target="#datetimepicker1" placeholder="Birthday" name="birthday" value="<?php echo $user["birthday"]; ?>">
+                <input id="datetimepicker1Input" type="text" class="form-control input"
+                    data-td-target="#datetimepicker1" placeholder="Birthday" name="birthday"
+                    value="<?php echo $user["birthday"]; ?>">
 
                 <span class="input-group-text" data-td-target="#datetimepicker1" data-td-toggle="datepicker">
                     <i class="fa-regular fa-calendar"></i>
@@ -276,7 +279,9 @@ if ($user["avatar"]) {
 
         </div>
 
+        <div>
 
+        <input type="hidden" name="action" value="save_changes">
         <input class="btn btn-outline-secondary m-t-b" type="submit" name="submit" value="Save">
 
         </div>

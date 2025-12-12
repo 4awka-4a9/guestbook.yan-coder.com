@@ -16,7 +16,9 @@ $stmt = $pdo->prepare(
   last_name, 
   about_me, 
   avatar, 
-  email 
+  email,
+  city,
+  birthday 
   FROM `users` 
   WHERE id = :id
   ");
@@ -90,6 +92,14 @@ $description = "Guestbook" . $user["username"] . "'s profile page by yan-coder m
                 <tr>
                     <th>Last name</th>
                     <td><?php echo $user["last_name"];?></td>
+                </tr>
+                <tr>
+                    <th>City</th>
+                    <td><?php echo $user["city"];?></td>
+                </tr>
+                <tr>
+                    <th>Birthday</th>
+                    <td><?php echo $user["birthday"];?></td>
                 </tr>
                 <tr>
                     <th>About me</th>
