@@ -185,7 +185,7 @@ if ($user["avatar"]) {
 
         <label class="m-t-b">Edit profile</label>
 
-        <div style="color: red;">
+        <div class="text-danger">
             <?php foreach ($errors as $error): ?>
                 <p><?php echo $error; ?></p>
             <?php endforeach; ?>

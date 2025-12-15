@@ -9,7 +9,7 @@ if (!empty($_SESSION["user_id"])) {
 }
 
 $errors = [];
-if (!empty($_POST)) {
+if (isset($_POST["action"]) && $_POST["action"] == "login") {
 
   if (empty($_POST["user_name"])) {
     $errors[] = "Please enter Username or Email";
@@ -22,8 +22,8 @@ if (!empty($_POST)) {
 
     $stmt = $pdo->prepare(
       "SELECT id 
-          FROM users 
-          WHERE (username = :username or email = :username) and password = :password"
+            FROM users 
+            WHERE (username = :username or email = :username) and password = :password"
     );
 
     $stmt->execute(array(
@@ -39,7 +39,9 @@ if (!empty($_POST)) {
     } else {
       $errors[] = "Please enter valid credentails";
     }
+
   }
+
 }
 
 $title = "guestbook.yan-coder.com | log in";
@@ -55,7 +57,7 @@ $description = "Guestbook log in page by yan-coder maked with php, sql and boots
 
     <h1 class="h3 mb-3 fw-normal">Login now!</h1>
 
-    <div style="color: red;">
+    <div class="red=text">
       <?php foreach ($errors as $error): ?>
         <p><?php echo $error; ?></p>
       <?php endforeach; ?>
@@ -84,7 +86,8 @@ $description = "Guestbook log in page by yan-coder maked with php, sql and boots
             Remember me
           </label>
         </div> -->
-    
+
+    <input type="hidden" name="action" value="login">
     <input class="btn btn-primary w-100 py-2 submit" type="submit" name="submit" value="Login">
 
     <a href="registration.php">Don't have an account? Register now!</a>

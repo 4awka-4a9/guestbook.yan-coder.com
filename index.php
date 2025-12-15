@@ -8,6 +8,9 @@ if (empty($_SESSION["user_id"])) {
   header("location: login.php");
 }
 
+$comment_added = false;
+$comment_deleted = false;
+
 if (isset($_POST["action"]) && $_POST["action"] == "post_comment") {
   $stmt = $pdo->prepare(
     "INSERT INTO comments
@@ -20,6 +23,9 @@ if (isset($_POST["action"]) && $_POST["action"] == "post_comment") {
     "user_id" => $_SESSION["user_id"],
     "comment" => $_POST["comment"]
   ));
+
+  $comment_added = true;
+
 }
 
 if (isset($_POST["action"]) && $_POST["action"] == "delete_comment") {
@@ -34,7 +40,8 @@ if (isset($_POST["action"]) && $_POST["action"] == "delete_comment") {
     "id" => $_POST["comment_id"]
   ));
 
-  header("location: index.php");
+  $comment_deleted = true;
+
 }
 
 $stmt = $pdo->prepare(
@@ -64,6 +71,17 @@ $description = "Guestbook home page by yan-coder maked with php, sql and bootstr
 
   <div id="#comments-form">
     <h3>Please add your comment</h3>
+
+    <?php
+    
+      if ($comment_added == true) {
+        echo "<p class='green-text'>Comment was added!</p>";
+      }
+      if ($comment_deleted == true) {
+        echo "<p class='text-danger'>Comment was deleted!</p>";
+      }
+    
+    ?>
 
     <form method="POST" action="index.php">
 

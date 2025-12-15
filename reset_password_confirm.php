@@ -59,58 +59,57 @@ $form = <<<TXT
 TXT;
 
 $stmt = $pdo->prepare(
-    "SELECT id, reset_password_secret
+  "SELECT id, reset_password_secret
       FROM users 
       WHERE id = :user_id AND reset_password_secret = :reset_password_secret
-      ");
+      "
+);
 
-  $stmt->execute(['user_id' => $_GET["user_id"], 'reset_password_secret' => $_GET["secret"]]);
-  $user = $stmt->fetch(PDO::FETCH_ASSOC);
+$stmt->execute(['user_id' => $_GET["user_id"], 'reset_password_secret' => $_GET["secret"]]);
+$user = $stmt->fetch(PDO::FETCH_ASSOC);
 
 if (empty($user)) {
 
-    $current_form = "<h1>Wrong link</h1>";
+  $current_form = "<h1>Wrong link</h1>";
+
+} else {
+
+  $current_form = $form;
 
 }
-else {
 
-    $current_form = $form;
-             
-}
+if (isset($_POST["action"]) && $_POST["action"] == "confirm_password_reset") {
 
-if (!empty($_POST)) {
+  if (empty($_POST["password"])) {
+    $errors[] = "Please enter password";
+  }
+  if (strlen($_POST["password"]) < 6) {
+    $errors[] = "Password is too short";
+  }
+  if (empty($_POST["confirm_password"])) {
+    $errors[] = "Please confirm password";
+  }
+  if ($_POST["password"] !== $_POST["confirm_password"]) {
+    $errors[] = "Your confirm password is not match password";
+  }
+  if (empty($errors)) {
 
-    if (empty($_POST["password"])) {
-        $errors[] = "Please enter password";
-    }
-    if (strlen($_POST["password"]) < 6) {
-        $errors[] = "Password is too short";
-    }
-    if (empty($_POST["confirm_password"])) {
-        $errors[] = "Please confirm password";
-    }
-    if ($_POST["password"] !== $_POST["confirm_password"]) {
-        $errors[] = "Your confirm password is not match password";
-    }
-    if (empty($errors)) {
-    
-        if (isset($_POST["action"]) && $_POST["action"] == "confirm_password_reset") {
-
-          $stmt = $pdo->prepare(
+    $stmt = $pdo->prepare(
       "UPDATE users
               SET password = :password 
               WHERE id = :user_id AND reset_password_secret = :reset_password_secret
-              ");
+              "
+    );
 
-          $stmt->execute(['user_id' => $_GET["user_id"], 'reset_password_secret' => $_GET["secret"], 'password' => sha1($_POST["password"].SALT)]);
+    $stmt->execute(['user_id' => $_GET["user_id"], 'reset_password_secret' => $_GET["secret"], 'password' => sha1($_POST["password"] . SALT)]);
 
-          header("location: login.php");
+    header("location: login.php");
 
-        }
-
-    }
+  }
 
 }
+
+
 
 ?>
 
@@ -118,17 +117,17 @@ if (!empty($_POST)) {
 
 <main class="form-signin w-100 m-auto">
 
-    <form method="POST">
+  <form method="POST">
 
-        <h1 class="h3 mb-3 fw-normal">Reset password</h1>
+    <h1 class="h3 mb-3 fw-normal">Reset password</h1>
 
-        <div style="color: red;">
-          <?php foreach ($errors as $error) :?>
-            <p><?php echo $error; ?></p>
-          <?php endforeach; ?>
-        </div>
+    <div style="color: red;">
+      <?php foreach ($errors as $error): ?>
+        <p><?php echo $error; ?></p>
+      <?php endforeach; ?>
+    </div>
 
-    <?php echo $current_form;?>
-  
+    <?php echo $current_form; ?>
+
 </main>
 <?php require_once "auth_footer.php"; ?>

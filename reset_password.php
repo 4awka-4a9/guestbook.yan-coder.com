@@ -16,7 +16,7 @@ $errors = [];
 $succes = false;
 $secret_link = "";
 
-if (!empty($_POST)) {
+if (isset($_POST["action"]) && $_POST["action"] == "password_reset") {
 
   $stmt = $pdo->prepare(
     "SELECT email, id
@@ -42,8 +42,8 @@ if (!empty($_POST)) {
 
     $stmt = $pdo->prepare(
       "UPDATE users SET 
-            reset_password_secret = :secret_code
-            WHERE id = :user_id"
+              reset_password_secret = :secret_code
+              WHERE id = :user_id"
     );
 
     $stmt->execute(array("secret_code" => $secret_link, 'user_id' => $user_data["id"]));
@@ -52,12 +52,12 @@ if (!empty($_POST)) {
 
     $mailText = <<<TXT
 
-        <p>
-        Hello, you requested a password reset for the guestbook.yan-coder.com. To restore your password, please follow the link below.<br>
-        </p>
-        <a href='$link'>Reset password</a>
+          <p>
+          Hello, you requested a password reset for the guestbook.yan-coder.com. To restore your password, please follow the link below.<br>
+          </p>
+          <a href='$link'>Reset password</a>
 
-      TXT;
+        TXT;
 
     sendEmail(
       $_POST["email"],
@@ -66,10 +66,10 @@ if (!empty($_POST)) {
     );
 
     $succes = true;
-
   }
 
 }
+
 
 ?>
 
@@ -86,7 +86,7 @@ if (!empty($_POST)) {
       <?php endforeach; ?>
     </div>
 
-    <div style="color: green;">
+    <div class="text-success">
 
       <?php
 
@@ -104,6 +104,7 @@ if (!empty($_POST)) {
       <label for="floatingPassword">Email address</label>
     </div>
 
+    <input type="hidden" name="action" value="password_reset">
     <input class="btn btn-primary w-100 py-2 submit" type="submit" name="submit" value="Send reset password link">
 
     <p class="mt-5 mb-3 text-body-secondary">&copy; yan-coder 2025</p>
