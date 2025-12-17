@@ -20,7 +20,7 @@ $form = <<<TXT
             name="password" 
             required="" value=""
           
-          <label for="floatingInput">Password</label>
+          <label >Password</label>
     </div>
 
     <div class="form-floating">
@@ -33,7 +33,7 @@ $form = <<<TXT
             required="" 
             value=""
           
-          <label for="floatingInput">Confirm password</label>
+          <label >Confirm password</label>
     </div>
 
     <input type="hidden" name="action" value="confirm_password_reset">

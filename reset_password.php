@@ -100,7 +100,7 @@ if (isset($_POST["action"]) && $_POST["action"] == "password_reset") {
 
     <div class="form-floating">
       <input type="text" class="form-control input" placeholder="Email" name="email" required="">
-      <label for="floatingInput">Email address</label>
+      <label >Email address</label>
     </div>
 
     <input type="hidden" name="action" value="password_reset">

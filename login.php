@@ -64,15 +64,15 @@ $description = "Guestbook log in page by yan-coder maked with php, sql and boots
     </div>
 
     <div class="form-floating">
-      <input type="text" class="form-control input"  placeholder="name@example.com" name="user_name"
+      <input type="text" class="form-control input" id="floatingInput" placeholder="name@example.com" name="user_name"
         required="" value="<?php echo (!empty($_POST["user_name"]) ? $_POST["user_name"] : ''); ?>">
-      <label for="floatingInput">Username</label>
+      <label >Username</label>
     </div>
 
     <div class="form-floating">
-      <input type="password" class="form-control input"  placeholder="Password" name="password"
+      <input type="password" class="form-control input" id="floatingInput" placeholder="Password" name="password"
         required="" value="">
-      <label for="floatingInput">Password</label>
+      <label >Password</label>
     </div>
 
     <!-- <div class="form-check text-start my-3">

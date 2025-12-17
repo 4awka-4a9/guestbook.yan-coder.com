@@ -114,37 +114,37 @@ $description = "Guestbook registration page by yan-coder maked with php, sql and
     <div class="form-floating">
       <input type="text" class="form-control input" id="floatingInput" placeholder="name@example.com" name="user_name"
         required="" value="<?php echo (!empty($_POST["user_name"]) ? $_POST["user_name"] : ''); ?>">
-      <label for="floatingInput">Username</label>
+      <label >Username</label>
     </div>
 
     <div class="form-floating">
       <input type="text" class="form-control input" id="floatingInput" placeholder="Email" name="email" required=""
         value="<?php echo (!empty($_POST["email"]) ? $_POST["email"] : ''); ?>">
-      <label for="floatingInput">Email address</label>
+      <label >Email address</label>
     </div>
 
     <div class="form-floating">
       <input type="text" class="form-control input" id="floatingInput" placeholder="last name" name="first_name"
         required="" value="<?php echo (!empty($_POST["first_name"]) ? $_POST["first_name"] : ''); ?>">
-      <label for="floatingInput">First name</label>
+      <label >First name</label>
     </div>
 
     <div class="form-floating">
       <input type="text" class="form-control input" id="floatingInput" placeholder="Last name" name="last_name"
         required="" value="<?php echo (!empty($_POST["last_name"]) ? $_POST["last_name"] : ''); ?>">
-      <label for="floatingInput">Last name</label>
+      <label >Last name</label>
     </div>
 
     <div class="form-floating">
       <input type="password" class="form-control input"  placeholder="Password" name="password"
         required="" value="">
-      <label for="floatingInput">Password</label>
+      <label >Password</label>
     </div>
 
     <div class="form-floating">
       <input type="password" class="form-control input" id="floatingInput" placeholder="Password"
         name="confirm_password" required="" value="">
-      <label for="floatingInput">Confirm password</label>
+      <label >Confirm password</label>
     </div>
 
     <!-- <div class="form-check text-start my-3">
