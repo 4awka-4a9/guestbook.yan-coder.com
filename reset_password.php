@@ -80,7 +80,7 @@ if (isset($_POST["action"]) && $_POST["action"] == "password_reset") {
 
     <h1 class="h3 mb-3 fw-normal">Reset password</h1>
 
-    <div style="color: red;">
+    <div class="text-danger">
       <?php foreach ($errors as $error): ?>
         <p><?php echo $error; ?></p>
       <?php endforeach; ?>

@@ -57,7 +57,7 @@ $description = "Guestbook log in page by yan-coder maked with php, sql and boots
 
     <h1 class="h3 mb-3 fw-normal">Login now!</h1>
 
-    <div class="red=text">
+    <div class="text-danger">
       <?php foreach ($errors as $error): ?>
         <p><?php echo $error; ?></p>
       <?php endforeach; ?>

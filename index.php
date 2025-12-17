@@ -48,7 +48,8 @@ $stmt = $pdo->prepare(
   "SELECT users.username, 
     comments.comment, 
     comments.created_at, 
-    users.avatar, comments.id, 
+    users.avatar,
+    comments.id, 
     comments.user_id 
     FROM `comments` 
     LEFT JOIN users ON user_id=users.id 
@@ -75,7 +76,7 @@ $description = "Guestbook home page by yan-coder maked with php, sql and bootstr
     <?php
     
       if ($comment_added == true) {
-        echo "<p class='green-text'>Comment was added!</p>";
+        echo "<p class='text-succes'>Comment was added!</p>";
       }
       if ($comment_deleted == true) {
         echo "<p class='text-danger'>Comment was deleted!</p>";

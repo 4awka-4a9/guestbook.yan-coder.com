@@ -9,15 +9,10 @@ if (!empty($_SESSION["user_id"])) {
 }
 
 $errors = [];
-$isRegistered = 0;
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
   $username = $_POST["user_name"];
   $email = $_POST["email"];
-}
-
-if (!empty($_GET["registration"])) {
-  $isRegistered = 1;
 }
 
 if (isset($_POST["action"]) && $_POST["action"] == "register") {

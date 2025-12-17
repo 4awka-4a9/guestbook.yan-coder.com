@@ -8,6 +8,8 @@ if (empty($_SESSION["user_id"])) {
     header("location: login.php");
 }
 
+$profile_updated = false;
+
 $errors = [];
 if (!empty($_POST)) {
 
@@ -63,19 +65,19 @@ if (!empty($_POST)) {
     }
 
     if (isset($_FILES["fileToUpload"]["name"]) and $_FILES["fileToUpload"]["name"]) {
-        $target_dir = "/avatars/";
+        // $target_dir = "/avatars/";
+        $target_dir = __DIR__ . "/avatars/";
         $extension = pathinfo($_FILES["fileToUpload"]["name"], PATHINFO_EXTENSION);
         $filename = "avatar{$_SESSION['user_id']}." . strtolower($extension);
-        $target_file = $_SERVER['DOCUMENT_ROOT'] . $target_dir . $filename;
+        // $target_file = $_SERVER['DOCUMENT_ROOT'] . $target_dir . $filename;
+        $target_file = $target_dir . $filename;
 
         $update["avatar"] = $filename;
         $sql_avatar = ", avatar = :avatar";
 
         $check = getimagesize($_FILES["fileToUpload"]["tmp_name"]);
 
-        if ($check !== false) {
-
-        } else {
+        if ($check === false) {
 
             $errors[] = "File is not an image.";
 
@@ -144,6 +146,8 @@ if (!empty($_POST)) {
         );
 
         $stmt->execute($update);
+
+        $profile_updated = true;
     }
 }
 
@@ -185,10 +189,18 @@ if ($user["avatar"]) {
 
         <label class="m-t-b">Edit profile</label>
 
-        <div class="text-danger">
-            <?php foreach ($errors as $error): ?>
-                <p><?php echo $error; ?></p>
-            <?php endforeach; ?>
+        <div>
+            <?php
+
+            if (!empty($errors)) {
+                foreach ($errors as $error):
+                    echo "<p class='text-danger'>$error</p>";
+                endforeach;
+            } elseif ($profile_updated == true) {
+                echo "<p class='text-success'>Profile was updated</p>";
+            }
+
+            ?>
         </div>
 
         <!-- <div class="form-floating m-t-b">
@@ -205,7 +217,7 @@ if ($user["avatar"]) {
             <input type="file" class="form-control d-none" id="fileToUpload" name="fileToUpload" />
 
             <label class="btn btn-primary upload-avatar-btn" for="fileToUpload" id="uploadButtonLabel">
-                <img class="avatar me-2" src="avatars/<?php echo $avatar; ?>">
+                <img class="avatar me-2" src="avatars/<?php echo htmlspecialchars($avatar); ?>">
                 Upload avatar
             </label>
 
@@ -214,19 +226,19 @@ if ($user["avatar"]) {
 
         <div class="form-floating m-t-b">
             <input type="text" class="form-control input" id="floatingInput" placeholder="name@example.com"
-                name="user_name" value="<?php echo $user["username"]; ?>" />
+                name="user_name" value="<?php echo htmlspecialchars($user["username"]); ?>" />
             <label for="floatingInput">Username</label>
         </div>
 
         <div class="form-floating m-t-b">
             <input type="text" class="form-control input" id="floatingPassword" placeholder="last name"
-                name="first_name" required="" value="<?php echo $user["first_name"]; ?>" />
+                name="first_name" required="" value="<?php echo htmlspecialchars($user["first_name"]); ?>" />
             <label for="floatingPassword">First name</label>
         </div>
 
         <div class="form-floating m-t-b">
             <input type="text" class="form-control input" id="floatingPassword" placeholder="Last name" name="last_name"
-                required="" value="<?php echo $user["last_name"]; ?>" />
+                required="" value="<?php echo htmlspecialchars($user["last_name"]); ?>" />
             <label for="floatingPassword">Last name</label>
         </div>
 
@@ -250,13 +262,13 @@ if ($user["avatar"]) {
 
         <div class="form-floating m-t-b">
             <input type="text" class="form-control input" id="floatingPassword" placeholder="City" name="city"
-                value="<?php echo $user["city"]; ?>" />
+                value="<?php echo htmlspecialchars($user["city"]); ?>" />
             <label for="floatingPassword">City</label>
         </div>
 
         <div class="form-floating m-t-b">
             <textarea type="text" class="form-control input" id="floatingPassword" placeholder="About me"
-                name="about_me"><?php echo $user["about_me"]; ?></textarea>
+                name="about_me"><?php echo htmlspecialchars($user["about_me"]); ?></textarea>
 
             <label for="floatingPassword">About me</label>
         </div>
@@ -269,7 +281,7 @@ if ($user["avatar"]) {
 
                 <input id="datetimepicker1Input" type="text" class="form-control input"
                     data-td-target="#datetimepicker1" placeholder="Birthday" name="birthday"
-                    value="<?php echo $user["birthday"]; ?>">
+                    value="<?php echo htmlspecialchars($user["birthday"]); ?>">
 
                 <span class="input-group-text" data-td-target="#datetimepicker1" data-td-toggle="datepicker">
                     <i class="fa-regular fa-calendar"></i>
@@ -281,8 +293,8 @@ if ($user["avatar"]) {
 
         <div>
 
-        <input type="hidden" name="action" value="save_changes">
-        <input class="btn btn-outline-secondary m-t-b" type="submit" name="submit" value="Save">
+            <input type="hidden" name="action" value="save_changes">
+            <input class="btn btn-outline-secondary m-t-b" type="submit" name="submit" value="Save">
 
         </div>
 

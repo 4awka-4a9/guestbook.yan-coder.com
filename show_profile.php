@@ -41,6 +41,9 @@ $user["username"] = htmlspecialchars($user["username"]);
 $user["email"] = htmlspecialchars($user["email"]);
 $user["first_name"] = htmlspecialchars($user["first_name"]);
 $user["last_name"] = htmlspecialchars($user["last_name"]);
+$user["about_me"] = htmlspecialchars($user["about_me"]);
+$user["city"] = htmlspecialchars($user["city"]);
+$user["birthday"] = htmlspecialchars($user["birthday"]);
 
 $title = "guestbook.yan-coder.com | " . $user["username"];
 $description = "Guestbook" . $user["username"] . "'s profile page by yan-coder maked with php, sql and bootstrap";
