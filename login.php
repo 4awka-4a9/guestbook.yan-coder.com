@@ -64,15 +64,15 @@ $description = "Guestbook log in page by yan-coder maked with php, sql and boots
     </div>
 
     <div class="form-floating">
-      <input type="text" class="form-control input" id="floatingInput" placeholder="name@example.com" name="user_name"
-        required="" value="<?php echo (!empty($_POST["user_name"]) ? $_POST["user_name"] : ''); ?>" />
+      <input type="text" class="form-control input"  placeholder="name@example.com" name="user_name"
+        required="" value="<?php echo (!empty($_POST["user_name"]) ? $_POST["user_name"] : ''); ?>">
       <label for="floatingInput">Username</label>
     </div>
 
     <div class="form-floating">
-      <input type="password" class="form-control input" id="floatingPassword" placeholder="Password" name="password"
-        required="" value="" />
-      <label for="floatingPassword">Password</label>
+      <input type="password" class="form-control input"  placeholder="Password" name="password"
+        required="" value="">
+      <label for="floatingInput">Password</label>
     </div>
 
     <!-- <div class="form-check text-start my-3">
@@ -81,7 +81,7 @@ $description = "Guestbook log in page by yan-coder maked with php, sql and boots
             type="checkbox"
             value="remember-me"
             id="checkDefault"
-          />
+          
           <label class="form-check-label" for="checkDefault">
             Remember me
           </label>
@@ -100,12 +100,11 @@ $description = "Guestbook log in page by yan-coder maked with php, sql and boots
         src="https://informer.yandex.ru/informer/105184923/3_1_FFFFFFFF_EFEFEFFF_0_pageviews"
         style="width:88px; height:31px; border:0;" alt="Яндекс.Метрика"
         title="Яндекс.Метрика: данные за сегодня (просмотры, визиты и уникальные посетители)"
-        class="ym-advanced-informer" data-cid="105184923" data-lang="ru" /> </a> <!-- /Yandex.Metrika informer -->
+        class="ym-advanced-informer" data-cid="105184923" data-lang="ru" > </a> <!-- /Yandex.Metrika informer -->
     <!-- Yandex.Metrika counter -->
-    <script
-      type="text/javascript">     (function (m, e, t, r, i, k, a) { m[i] = m[i] || function () { (m[i].a = m[i].a || []).push(arguments) }; m[i].l = 1 * new Date(); for (var j = 0; j < document.scripts.length; j++) { if (document.scripts[j].src === r) { return; } } k = e.createElement(t), a = e.getElementsByTagName(t)[0], k.async = 1, k.src = r, a.parentNode.insertBefore(k, a) })(window, document, 'script', 'https://mc.yandex.ru/metrika/tag.js?id=105184923', 'ym'); ym(105184923, 'init', { ssr: true, webvisor: true, clickmap: true, ecommerce: "dataLayer", accurateTrackBounce: true, trackLinks: true }); </script>
+    <script>     (function (m, e, t, r, i, k, a) { m[i] = m[i] || function () { (m[i].a = m[i].a || []).push(arguments) }; m[i].l = 1 * new Date(); for (var j = 0; j < document.scripts.length; j++) { if (document.scripts[j].src === r) { return; } } k = e.createElement(t), a = e.getElementsByTagName(t)[0], k.async = 1, k.src = r, a.parentNode.insertBefore(k, a) })(window, document, 'script', 'https://mc.yandex.ru/metrika/tag.js?id=105184923', 'ym'); ym(105184923, 'init', { ssr: true, webvisor: true, clickmap: true, ecommerce: "dataLayer", accurateTrackBounce: true, trackLinks: true }); </script>
     <noscript>
-      <div><img src="https://mc.yandex.ru/watch/105184923" style="position:absolute; left:-9999px;" alt="" /></div>
+      <div><img src="https://mc.yandex.ru/watch/105184923" style="position:absolute; left:-9999px;" alt="" ></div>
     </noscript> <!-- /Yandex.Metrika counter -->
 
   </form>

@@ -74,14 +74,14 @@ $description = "Guestbook home page by yan-coder maked with php, sql and bootstr
     <h3>Please add your comment</h3>
 
     <?php
-    
-      if ($comment_added == true) {
-        echo "<p class='text-succes'>Comment was added!</p>";
-      }
-      if ($comment_deleted == true) {
-        echo "<p class='text-danger'>Comment was deleted!</p>";
-      }
-    
+
+    if ($comment_added == true) {
+      echo "<p class='text-succes'>Comment was added!</p>";
+    }
+    if ($comment_deleted == true) {
+      echo "<p class='text-danger'>Comment was deleted!</p>";
+    }
+
     ?>
 
     <form method="POST" action="index.php">
@@ -135,7 +135,7 @@ $description = "Guestbook home page by yan-coder maked with php, sql and bootstr
                 <div class="ms-auto">
                     <form method="POST" action="index.php" class="m-0">
                         <input type="hidden" name="action" value="delete_comment">
-                        <input type="hidden" name="comment_id" value="{$comment["id"]}">
+                        <input type="hidden" name="comment_id" value="{$comment['id']}">
                         <button type="submit" class="btn btn-danger btn-sm">
                             Delete
                         </button>
@@ -150,7 +150,7 @@ $description = "Guestbook home page by yan-coder maked with php, sql and bootstr
             <div class="card">
               <div class="card-header d-flex align-items-center">
                 <img class="avatar me-2" src="avatars/{$avatar}">
-                <a href="show_profile.php?id={$comment["user_id"]}">{$comment["username"]}</a>
+                <a href="show_profile.php?id={$comment['user_id']}">{$comment["username"]}</a>
                 {$delete_comment}
               </div>
               <div class="card-body">

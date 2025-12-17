@@ -1,14 +1,14 @@
 <!doctype html>
 <html lang="en" data-bs-theme="auto">
   <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content="<?php echo $description;?>" />
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="<?php echo $description;?>">
     <meta
       name="author"
       content="yan-coder"
-    />
-    <meta name="generator" content="Astro v5.13.2" />
+    >
+    <meta name="generator" content="">
     <title><?php echo $title;?></title>
 
     <link rel="apple-touch-icon" sizes="180x180" href="img/apple-touch-icon.png">
@@ -18,7 +18,7 @@
     <link
       rel="canonical"
       href="https://getbootstrap.com/docs/5.3/examples/pricing/"
-    />
+    >
     <script src="js/color-modes.js"></script>
     
     <!-- Popperjs -->
@@ -29,10 +29,10 @@
     <!-- Tempus Dominus Styles -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@eonasdan/tempus-dominus@6.9.4/dist/css/tempus-dominus.min.css" crossorigin="anonymous">
 
-    <link href="css/bootstrap.min.css" rel="stylesheet" />
+    <link href="css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <meta name="theme-color" content="#712cf9" />
-    <link href="css/main.css" rel="stylesheet" />
+    <meta name="theme-color" content="#712cf9">
+    <link href="css/main.css" rel="stylesheet">
     <link rel="stylesheet" href="css/header.css">
 
   </head>

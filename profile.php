@@ -214,7 +214,7 @@ if ($user["avatar"]) {
                 </div> -->
 
         <div class="input-group m-t-b">
-            <input type="file" class="form-control d-none" id="fileToUpload" name="fileToUpload" />
+            <input type="file" class="form-control d-none" id="fileToUpload" name="fileToUpload" >
 
             <label class="btn btn-primary upload-avatar-btn" for="fileToUpload" id="uploadButtonLabel">
                 <img class="avatar me-2" src="avatars/<?php echo htmlspecialchars($avatar); ?>">
@@ -225,52 +225,49 @@ if ($user["avatar"]) {
         </div>
 
         <div class="form-floating m-t-b">
-            <input type="text" class="form-control input" id="floatingInput" placeholder="name@example.com"
-                name="user_name" value="<?php echo htmlspecialchars($user["username"]); ?>" />
+            <input type="text" class="form-control input" placeholder="name@example.com" name="user_name"
+                value="<?php echo htmlspecialchars($user["username"]); ?>" >
             <label for="floatingInput">Username</label>
         </div>
 
         <div class="form-floating m-t-b">
-            <input type="text" class="form-control input" id="floatingPassword" placeholder="last name"
-                name="first_name" required="" value="<?php echo htmlspecialchars($user["first_name"]); ?>" />
-            <label for="floatingPassword">First name</label>
+            <input type="text" class="form-control input" placeholder="last name" name="first_name" required=""
+                value="<?php echo htmlspecialchars($user["first_name"]); ?>" >
+            <label for="floatingInput">First name</label>
         </div>
 
         <div class="form-floating m-t-b">
-            <input type="text" class="form-control input" id="floatingPassword" placeholder="Last name" name="last_name"
-                required="" value="<?php echo htmlspecialchars($user["last_name"]); ?>" />
-            <label for="floatingPassword">Last name</label>
+            <input type="text" class="form-control input" placeholder="Last name" name="last_name" required=""
+                value="<?php echo htmlspecialchars($user["last_name"]); ?>" >
+            <label for="floatingInput">Last name</label>
         </div>
 
         <div class="form-floating m-t-b">
-            <input type="password" class="form-control input" id="floatingPassword" placeholder="Password"
-                name="old_password" value="" />
-            <label for="floatingPassword">Old password</label>
+            <input type="password" class="form-control input" placeholder="Password" name="old_password" value="" >
+            <label for="floatingInput">Old password</label>
         </div>
 
         <div class="form-floating m-t-b">
-            <input type="password" class="form-control input" id="floatingPassword" placeholder="Password"
-                name="password" value="" />
-            <label for="floatingPassword">Password</label>
+            <input type="password" class="form-control input" placeholder="Password" name="password" value="">
+            <label for="floatingInput">Password</label>
         </div>
 
         <div class="form-floating m-t-b">
-            <input type="password" class="form-control input" id="floatingPassword" placeholder="Password"
-                name="confirm_password" value="" />
-            <label for="floatingPassword">Confirm password</label>
+            <input type="password" class="form-control input" placeholder="Password" name="confirm_password" value="">
+            <label for="floatingInput">Confirm password</label>
         </div>
 
         <div class="form-floating m-t-b">
-            <input type="text" class="form-control input" id="floatingPassword" placeholder="City" name="city"
-                value="<?php echo htmlspecialchars($user["city"]); ?>" />
-            <label for="floatingPassword">City</label>
+            <input type="text" class="form-control input" placeholder="City" name="city"
+                value="<?php echo htmlspecialchars($user["city"]); ?>">
+            <label for="floatingInput">City</label>
         </div>
 
         <div class="form-floating m-t-b">
-            <textarea type="text" class="form-control input" id="floatingPassword" placeholder="About me"
+            <textarea class="form-control input" placeholder="About me"
                 name="about_me"><?php echo htmlspecialchars($user["about_me"]); ?></textarea>
 
-            <label for="floatingPassword">About me</label>
+            <label for="floatingInput">About me</label>
         </div>
 
 

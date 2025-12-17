@@ -19,10 +19,10 @@ require 'PHPMailer-master/src/SMTP.php';
 
 $dsn = "mysql:host=" . HOST . ";dbname=" . DBNAME . ";charset=" . CHARSET;
 try {
-    $pdo = new PDO($dsn, USER, PASSWORD);
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+  $pdo = new PDO($dsn, USER, PASSWORD);
+  $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 } catch (PDOException $e) {
-    die("Connection lost: " . $e->getMessage());
+  die("Connection lost: " . $e->getMessage());
 }
 
 //reset password email send
@@ -86,10 +86,11 @@ function sendEmail($to, $subject, $html_body)
 
 //validate email
 
-function validateEMAIL($email) {
-        $v = "/[a-zA-Z0-9_.+ -]+@[a-zA-Z0-9-]+\.[a-zA-Z]+/";
+function validateEMAIL($email)
+{
+  $v = "/[a-zA-Z0-9_.+ -]+@[a-zA-Z0-9-]+\.[a-zA-Z]+/";
 
-        return (bool) preg_match($v, $email);
-    }
+  return (bool) preg_match($v, $email);
+}
 
 ?>
