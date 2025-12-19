@@ -26,4 +26,4 @@
     <link rel="stylesheet" href="css/auth_header.css">
 
   </head>
-  <body class="d-flex align-items-center py-4 bg-body-tertiary"></body>
+  <body class="d-flex align-items-center py-4 bg-body-tertiary">

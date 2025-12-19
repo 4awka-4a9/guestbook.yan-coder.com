@@ -78,7 +78,7 @@ $description = "Guestbook" . $user["username"] . "'s profile page by yan-coder m
 
                 <tr>
                     <th>Avatar</th>
-                    <td><img class="avatar me-2" src="avatars/<?php echo $avatar; ?>"></td>
+                    <td><img class="avatar me-2" src="avatars/<?php echo $avatar; ?>" alt="avatar"></td>
                 </tr>
                 <tr>
                     <th>Username</th>
@@ -86,7 +86,7 @@ $description = "Guestbook" . $user["username"] . "'s profile page by yan-coder m
                 </tr>
                 <tr>
                     <th>Email</th>
-                    <td><a href="mailto:" <?php echo $user["email"];?>><?php echo $user["email"];?></a></td>
+                    <td><a href="mailto:<?php echo $user["email"];?>"><?php echo $user["email"];?></a></td>
                 </tr>
                 <tr>
                     <th>First name</th>

@@ -170,6 +170,9 @@ $user = $stmt->fetch(PDO::FETCH_ASSOC);
 $user["username"] = htmlspecialchars($user["username"]);
 $user["first_name"] = htmlspecialchars($user["first_name"]);
 $user["last_name"] = htmlspecialchars($user["last_name"]);
+$user["about_me"] = htmlspecialchars($user["about_me"]);
+$user["city"] = htmlspecialchars($user["city"]);
+$user["birthday"] = htmlspecialchars($user["birthday"]);
 
 $title = "guestbook.yan-coder.com | " . $user["username"];
 $description = "Guestbook profile page by yan-coder maked with php, sql and bootstrap";
@@ -217,7 +220,7 @@ if ($user["avatar"]) {
             <input type="file" class="form-control d-none" id="fileToUpload" name="fileToUpload" >
 
             <label class="btn btn-primary upload-avatar-btn" for="fileToUpload" id="uploadButtonLabel">
-                <img class="avatar me-2" src="avatars/<?php echo htmlspecialchars($avatar); ?>">
+                <img class="avatar me-2" src="avatars/<?php echo $avatar; ?>" alt="avatar">
                 Upload avatar
             </label>
 
@@ -226,19 +229,19 @@ if ($user["avatar"]) {
 
         <div class="form-floating m-t-b">
             <input type="text" class="form-control input" placeholder="name@example.com" name="user_name"
-                value="<?php echo htmlspecialchars($user["username"]); ?>" >
+                value="<?php echo $user["username"]; ?>" >
             <label >Username</label>
         </div>
 
         <div class="form-floating m-t-b">
             <input type="text" class="form-control input" placeholder="last name" name="first_name" required=""
-                value="<?php echo htmlspecialchars($user["first_name"]); ?>" >
+                value="<?php echo $user["first_name"]; ?>" >
             <label >First name</label>
         </div>
 
         <div class="form-floating m-t-b">
             <input type="text" class="form-control input" placeholder="Last name" name="last_name" required=""
-                value="<?php echo htmlspecialchars($user["last_name"]); ?>" >
+                value="<?php echo $user["last_name"]; ?>" >
             <label>Last name</label>
         </div>
 
@@ -259,13 +262,13 @@ if ($user["avatar"]) {
 
         <div class="form-floating m-t-b">
             <input type="text" class="form-control input" placeholder="City" name="city"
-                value="<?php echo htmlspecialchars($user["city"]); ?>">
+                value="<?php echo $user["city"]; ?>">
             <label >City</label>
         </div>
 
         <div class="form-floating m-t-b">
             <textarea class="form-control input" placeholder="About me"
-                name="about_me"><?php echo htmlspecialchars($user["about_me"]); ?>
+                name="about_me"><?php echo $user["about_me"]; ?>
             </textarea>
             <label >About me</label>
         </div>
@@ -278,7 +281,7 @@ if ($user["avatar"]) {
 
                 <input id="datetimepicker1Input" type="text" class="form-control input"
                     data-td-target="#datetimepicker1" placeholder="Birthday" name="birthday"
-                    value="<?php echo htmlspecialchars($user["birthday"]); ?>">
+                    value="<?php echo $user["birthday"]; ?>">
 
                 <span class="input-group-text" data-td-target="#datetimepicker1" data-td-toggle="datepicker">
                     <i class="fa-regular fa-calendar"></i>

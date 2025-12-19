@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: localhost
--- Время создания: Окт 27 2025 г., 16:46
+-- Время создания: Дек 19 2025 г., 12:35
 -- Версия сервера: 10.4.28-MariaDB
 -- Версия PHP: 8.2.4
 
@@ -31,20 +31,9 @@ CREATE TABLE `comments` (
   `id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
   `comment` text NOT NULL,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` datetime NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Дамп данных таблицы `comments`
---
-
-INSERT INTO `comments` (`id`, `user_id`, `comment`, `created_at`) VALUES
-(1, 11, '111', '2025-10-22 17:21:45'),
-(2, 11, '111', '2025-10-22 17:22:58'),
-(3, 11, '111', '2025-10-22 17:24:11'),
-(4, 11, '2318561325', '2025-10-22 17:24:21'),
-(5, 22, '00000\r\n12312', '2025-10-22 17:27:12'),
-(6, 23, 'ya roman', '2025-10-22 17:44:29');
 
 -- --------------------------------------------------------
 
@@ -59,27 +48,14 @@ CREATE TABLE `users` (
   `password` varchar(100) NOT NULL,
   `first_name` varchar(80) NOT NULL,
   `last_name` varchar(80) NOT NULL,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` datetime NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `avatar` varchar(255) DEFAULT NULL,
+  `about_me` text DEFAULT NULL,
+  `reset_password_secret` varchar(255) DEFAULT NULL,
+  `city` varchar(255) DEFAULT NULL,
+  `birthday` date DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Дамп данных таблицы `users`
---
-
-INSERT INTO `users` (`id`, `username`, `email`, `password`, `first_name`, `last_name`, `created_at`) VALUES
-(11, '4awka-4a9', 'yanneverovsky@gmail.com', '9595e27fed6289c1dad92189dbe2a0c6e129091d', 'Yan', 'Neviarouski', '2025-10-22 15:49:31'),
-(12, '4awka-4a9', 'yanneverovsky@gmail.com', '9595e27fed6289c1dad92189dbe2a0c6e129091d', 'Yan', 'Neviarouski', '2025-10-22 15:55:48'),
-(13, '4awka-4a9', 'yanneverovsky@gmail.com', '9595e27fed6289c1dad92189dbe2a0c6e129091d', 'Yan', 'Neviarouski', '2025-10-22 17:01:00'),
-(14, '4awka-4a9', 'yanneverovsky@gmail.com', '9595e27fed6289c1dad92189dbe2a0c6e129091d', 'Yan', 'Neviarouski', '2025-10-22 17:02:14'),
-(15, '4awka-4a9', 'yanneverovsky@gmail.com', '9595e27fed6289c1dad92189dbe2a0c6e129091d', 'Yan', 'Neviarouski', '2025-10-22 17:03:16'),
-(16, 'yan', 'yanneverovsky@gmail.com', '9595e27fed6289c1dad92189dbe2a0c6e129091d', 'yan', 'neviarouski', '2025-10-22 17:04:55'),
-(17, 'yan', 'yanneverovsky@gmail.com', '9595e27fed6289c1dad92189dbe2a0c6e129091d', 'yan', 'neviarouski', '2025-10-22 17:06:15'),
-(18, 'yan', 'yanneverovsky@gmail.com', '9595e27fed6289c1dad92189dbe2a0c6e129091d', 'yan', 'Неверовский', '2025-10-22 17:08:37'),
-(19, 'yan', 'yanneverovsky@gmail.com', '9595e27fed6289c1dad92189dbe2a0c6e129091d', 'Ян', 'Неверовский', '2025-10-22 17:09:33'),
-(20, 'yan', 'yanneverovsky@gmail.com', '9595e27fed6289c1dad92189dbe2a0c6e129091d', 'Ян', 'Неверовский', '2025-10-22 17:11:17'),
-(21, 'yan', 'yanneverovsky@gmail.com', '9595e27fed6289c1dad92189dbe2a0c6e129091d', 'Ян', 'Неверовский', '2025-10-22 17:16:10'),
-(22, '12341234', '11111@gmail.com', 'f9c49c9d43293faeeb20b71c0d47f057554b27bd', '1123123', '376576376', '2025-10-22 17:25:50'),
-(23, 'roman', 'roman@gmail.com', '43c8f63d85f34b793ab074701f482c9ffeec8c5f', 'roman', 'neverovsky', '2025-10-22 17:43:56');
 
 --
 -- Индексы сохранённых таблиц
@@ -96,7 +72,9 @@ ALTER TABLE `comments`
 -- Индексы таблицы `users`
 --
 ALTER TABLE `users`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `username` (`username`),
+  ADD UNIQUE KEY `email` (`email`);
 
 --
 -- AUTO_INCREMENT для сохранённых таблиц
@@ -106,13 +84,13 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT для таблицы `comments`
 --
 ALTER TABLE `comments`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT для таблицы `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- Ограничения внешнего ключа сохраненных таблиц

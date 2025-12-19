@@ -76,7 +76,7 @@ $description = "Guestbook home page by yan-coder maked with php, sql and bootstr
     <?php
 
     if ($comment_added == true) {
-      echo "<p class='text-succes'>Comment was added!</p>";
+      echo "<p class='text-success'>Comment was added!</p>";
     }
     if ($comment_deleted == true) {
       echo "<p class='text-danger'>Comment was deleted!</p>";
@@ -149,14 +149,14 @@ $description = "Guestbook home page by yan-coder maked with php, sql and bootstr
       $commentTemplate = <<<TXT
             <div class="card">
               <div class="card-header d-flex align-items-center">
-                <img class="avatar me-2" src="avatars/{$avatar}">
+                <img class="avatar me-2" src="avatars/{$avatar}" alt="avatar">
                 <a href="show_profile.php?id={$comment['user_id']}">{$comment["username"]}</a>
                 {$delete_comment}
               </div>
               <div class="card-body">
                 <figure>
                   <blockquote class="blockquote">
-                    <p><pre>{$comment["comment"]}</pre></p>
+                    <pre>{$comment["comment"]}</pre>
                   </blockquote>
                   <figcaption class="blockquote-footer">
                       {$comment["created_at"]}

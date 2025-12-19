@@ -112,25 +112,25 @@ $description = "Guestbook registration page by yan-coder maked with php, sql and
     </div>
 
     <div class="form-floating">
-      <input type="text" class="form-control input" id="floatingInput" placeholder="name@example.com" name="user_name"
+      <input type="text" class="form-control input"  placeholder="name@example.com" name="user_name"
         required="" value="<?php echo (!empty($_POST["user_name"]) ? $_POST["user_name"] : ''); ?>">
       <label >Username</label>
     </div>
 
     <div class="form-floating">
-      <input type="text" class="form-control input" id="floatingInput" placeholder="Email" name="email" required=""
+      <input type="text" class="form-control input"  placeholder="Email" name="email" required=""
         value="<?php echo (!empty($_POST["email"]) ? $_POST["email"] : ''); ?>">
       <label >Email address</label>
     </div>
 
     <div class="form-floating">
-      <input type="text" class="form-control input" id="floatingInput" placeholder="last name" name="first_name"
+      <input type="text" class="form-control input"  placeholder="last name" name="first_name"
         required="" value="<?php echo (!empty($_POST["first_name"]) ? $_POST["first_name"] : ''); ?>">
       <label >First name</label>
     </div>
 
     <div class="form-floating">
-      <input type="text" class="form-control input" id="floatingInput" placeholder="Last name" name="last_name"
+      <input type="text" class="form-control input"  placeholder="Last name" name="last_name"
         required="" value="<?php echo (!empty($_POST["last_name"]) ? $_POST["last_name"] : ''); ?>">
       <label >Last name</label>
     </div>
@@ -142,7 +142,7 @@ $description = "Guestbook registration page by yan-coder maked with php, sql and
     </div>
 
     <div class="form-floating">
-      <input type="password" class="form-control input" id="floatingInput" placeholder="Password"
+      <input type="password" class="form-control input"  placeholder="Password"
         name="confirm_password" required="" value="">
       <label >Confirm password</label>
     </div>
