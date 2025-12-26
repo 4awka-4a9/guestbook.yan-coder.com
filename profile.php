@@ -267,9 +267,7 @@ if ($user["avatar"]) {
         </div>
 
         <div class="form-floating m-t-b">
-            <textarea class="form-control input" placeholder="About me"
-                name="about_me"><?php echo $user["about_me"]; ?>
-            </textarea>
+            <textarea class="form-control input" placeholder="About me" name="about_me"><?php echo $user["about_me"]; ?></textarea>
             <label >About me</label>
         </div>
 
